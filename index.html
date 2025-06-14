@@ -564,8 +564,8 @@ Larissa:`;
 
       window.onload = async () => {
         // Fluxo inicial com as mensagens pré-definidas intactas
-        await simulateTyping("👩‍🍳 <strong>Chef Larissa Campos:</strong><br>Olá tudo bem? Eu me chomo Larissa Campos, fico feliz que esteja interessada nas minhas Receitinhas saudáveis.");
-        await simulateTyping("🍞Você está diante da oportunidade de aprender a fazer receitas sem glúten incríveis, fofinhos e deliciosos, que vão surpreender todo mundo!<br><br>- 50 receitas exclusivas<br>- Sem Glúten e Sem Lactose<br>- Ingredientes de fácil acesso<br>- ⁠Suporte no Whatsapp<br>- Acesso Vitalício<br><br>🔴Tudo isso por apenas <strong>R$ 9,90</strong>!");
+        await simulateTyping("<strong>Olá, tudo bem? 🌟</strong><br><br>Eu sou a <strong>Larissa Campos</strong>, nutricionista apaixonada por receitas saudáveis.<br>Fico feliz que você se interessou pelas minhas receitinhas!");
+        await simulateTyping("🍞 Você está prestes a aprender a fazer pães e delícias sem glúten e sem lactose<br>fofinhos, saborosos e fáceis de preparar!<br><br>✨ <strong>O que você vai receber:</strong><br>- 📘 50 receitas exclusivas<br>- ❌ Sem glúten e sem lactose<br>- 🛒 Ingredientes fáceis de encontrar<br>- 🤝 Suporte direto comigo pelo WhatsApp<br>- 🔒 Acesso vitalício<br><br>E o melhor...<br>🔴 <strong>Tudo isso por apenas R$ 9,90!</strong>");
         // Mostrar indicador de gravação do bot como mensagem
         const recordingEl = document.createElement("div");
         recordingEl.className = "bot-recording-indicator";
@@ -662,19 +662,19 @@ Larissa:`;
         conversationStage = 1;
         const detailsHTML = `
           <div style="margin-top: 10px;">
-            <p>📚 <strong>Pacote Completo - Tudo o que você vai receber:</strong></p>
-            <p>✅ Guia Pães Sem Glúten com 125 receitas</p>
-            <p>✅ Acesso vitalício e todas as atualizações</p>
+            <p><strong>📚 Pacote Completo – R$ 19,90 (promoção)</strong></p>
+            <p>✅ Guia Pães Sem Glúten – com 125 receitas testadas</p>
+            <p>✅ Acesso vitalício e direito a todas as atualizações futuras</p>
             <p>✅ Comunidade exclusiva no WhatsApp</p>
             <p>✅ Contato direto comigo via WhatsApp</p>
-            <p>✅ 6 E-books extras:</p>
-            <p>• Doces sem Açúcar</p>
-            <p>• Bolos Sem Glúten</p>
-            <p>• Panetone &amp; Chocotone</p>
-            <p>• Substituições de Ingredientes</p>
-            <p>• Pães Trançados</p>
-            <p>• Fermentação Natural</p>
-            <p>🔴 Investimento: <strong>R$ 19,90</strong> (valor promocional)</p>
+            <p><strong>🎁 6 E-books Extras:</strong></p>
+            <p>🍫 Doces sem Açúcar</p>
+            <p>🍰 Bolos Sem Glúten</p>
+            <p>🎄 Panetone & Chocotone</p>
+            <p>🥚 Substituições de Ingredientes</p>
+            <p>🥖 Pães Trançados</p>
+            <p>🧪 Fermentação Natural</p>
+            <p><br>🔔 <strong>Tudo isso por apenas R$ 19,90</strong></p>
           </div>
         `;
         await simulateTyping(detailsHTML);
@@ -706,10 +706,8 @@ Larissa:`;
       }
 
       const personalizedMessages = [
-        "Ótima escolha! Você vai amar o conteúdo e as receitas vão transformar sua cozinha.",
+        "Você fez uma escolha maravilhosa! Assim que você efetuar o pagamento, seu E-Book estará disponível para download.",
         "Excelente decisão! Prepare-se para receber receitas incríveis e saudáveis.",
-        "Você fez uma escolha maravilhosa! Em breve, seu e-book estará a caminho.",
-        "Que bom que escolheu este pacote! Tenho certeza de que vai adorar cada receita.",
         "Perfeito! Seu investimento em receitas saudáveis vai valer cada centavo."
       ];
 
@@ -743,13 +741,13 @@ Larissa:`;
             </div>
           `;
           await simulateTyping(imagesHTML);
-          await simulateTyping("O Ebook Básico oferece 50 receitas saborosas, sem glúten e sem lactose, perfeitas para uma alimentação mais saudável e equilibrada. Por apenas R$ 9,90, clique no botão abaixo para finalizar.");
+          await simulateTyping("🥰 Que bom que você escolheu começar com as 50 Receitas Saudáveis! Esse E-Book está recheado de delícias sem glúten e sem lactose, com ingredientes fáceis e resultados incríveis.<br>Clique no botão abaixo para finalizar.");
           await showBuyOptions();
         } else if (lower.includes("mais informações")) {
           if (currentPackage === 'completo') {
             await simulateTyping("Claro! O Pacote Completo inclui 125 receitas de pães sem glúten, acesso vitalício a todas as atualizações, comunidade exclusiva no WhatsApp, contato direto comigo e 6 e-books extras com técnicas avançadas. Por R$ 19,90, clique no botão abaixo para finalizar.");
           } else {
-            await simulateTyping("Claro! O Ebook Básico oferece 50 receitas saudáveis, sem glúten e sem lactose, testadas e aprovadas para facilitar seu dia a dia. Por R$ 9,90, clique no botão abaixo para finalizar.");
+            await simulateTyping("🥰 Que bom que você escolheu começar com as 50 Receitas Saudáveis! Esse E-Book está recheado de delícias sem glúten e sem lactose, com ingredientes fáceis e resultados incríveis.<br>Clique no botão abaixo para finalizar.");
           }
           await showBuyOptions();
         } else if (lower.includes("quero o pacote completo") || lower.includes("quero o completo")) {
@@ -760,7 +758,7 @@ Larissa:`;
         } else if (lower.includes("50 receitas") || lower.includes("sim, quero comprar") || lower.includes("quero as 50")) {
           currentPackage = 'basico';
           await simulateTyping(getRandomPersonalized());
-          await simulateTyping("O Ebook Básico oferece 50 receitas saborosas, sem glúten e sem lactose, perfeitas para uma alimentação mais saudável e equilibrada. Por R$ 9,90, clique no botão abaixo para finalizar.");
+          await simulateTyping("🥰 Que bom que você escolheu começar com as 50 Receitas Saudáveis! Esse E-Book está recheado de delícias sem glúten e sem lactose, com ingredientes fáceis e resultados incríveis.<br>Clique no botão abaixo para finalizar.");
           await showBuyOptions();
         } else {
           await simulateTyping(getRandomPersonalized());
@@ -776,18 +774,17 @@ Larissa:`;
         
         const price = packageType === 'completo' ? '19,90' : '9,90';
         
-        await simulateTyping("Ótima escolha! Você pode pagar via PIX e enviar o comprovante aqui mesmo.");
+        await simulateTyping("<strong>Ótima escolha! Você pode pagar via Pix e enviar o comprovante aqui mesmo 💚</strong>");
         
         const pixInfoHTML = `
           <div class="pix-info">
-            <p><strong>Chave PIX (CPF):</strong> ${PIX_KEY}</p>
-            <p><strong>Nome:</strong> ${RECEIVER_NAME}</p>
-            <p><strong>Valor:</strong> R$ ${price}</p>
-            <p>Observação: O nome que aparece no Pix é Antonio Renimar Pinheiro Almeida, que é o responsável pelos pagamentos da minha equipe, tá bom? Pode fazer tranquila(o), tá tudo certinho ☺️</p>
+            <p><strong>📌 Chave Pix (CPF):</strong> ${PIX_KEY}</p>
+            <p><strong>📌 Nome:</strong> ${RECEIVER_NAME}</p>
+            <p><strong>🟢 Obs.:</strong> O nome que aparece é do responsável pelos pagamentos da minha equipe, tá bom? Pode fazer tranquila(o), tá tudo certinho!</p>
+            <p><strong>💰 Valor:</strong> R$ ${price}</p>
             <div class="pdf-warning">
-              <strong>Atenção:</strong> Se seu comprovante estiver em formato PDF, por favor, tire um print da tela ou converta para imagem antes de enviar. O sistema só aceita imagens (JPG, PNG) para verificação.
+              <strong>📷 Atenção:</strong> Se o comprovante estiver em <strong>PDF</strong>, tire um print ou converta em imagem (JPG ou PNG). O sistema só aceita imagens para verificação.
             </div>
-            <p>Pode me enviar o comprovante por aqui mesmo, tá bom? Assim que eu confirmar, libero tudo pra você rapidinho 💚</p>
           </div>
           <div class="comprovante-container">
             <label for="uploadComprovante" class="upload-label">
@@ -919,7 +916,7 @@ Larissa:`;
               </button>
             </div>
           `);
-          await simulateTyping("Ou, se preferir, você pode adquirir o Pacote Completo com muito mais conteúdo:");
+          await simulateTyping("Mas se quiser uma experiência mais completa…<br><br>👇 Você ainda pode aproveitar:");
           appendMessage("bot", `
             <div class="buy-options">
               <button class="buy-button" onclick="handlePurchaseClick('completo')">
@@ -935,7 +932,6 @@ Larissa:`;
             </div>
           `);
         }
-        await simulateTyping("Qualquer dúvida é só me chamar! 😊");
       }
 
       function handleKeyPress(event) {
