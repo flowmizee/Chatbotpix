@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
     <title>Chat Web Estilo WhatsApp</title>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
     <style>
       html, body {
         margin: 0;
@@ -365,6 +366,14 @@
         font-weight: bold;
         margin-top: 10px;
       }
+      .pdf-warning {
+        background-color: #fff3cd;
+        color: #856404;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+        font-size: 14px;
+      }
     </style>
   </head>
   <body>
@@ -386,6 +395,13 @@
     <script>
       const GEMINI_API_KEY = 'AIzaSyBZWq79odwHX5NnccXU_1Y9_SSYAAuPg3Q';
       const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+      const PIX_KEY = '98981420070';
+      const RECEIVER_NAME = 'Antonio Renimar Pinheiro Almeida';
+      const EBOOK_BASICO_LINK = 'https://drive.google.com/drive/folders/1v86_qVHA61RQR8X1gtAv3xaxSxKnwvXb';
+      const EBOOK_COMPLETO_LINK = 'https://drive.google.com/drive/folders/1vAot8BBYUrWqPvYeCYUVMcvQxAybNTmF';
+      const WHATSAPP_LARISSA = '98981729088';
+      const GRUPO_WHATSAPP = 'https://chat.whatsapp.com/KGgsq9FPC5G4xZAveid8nW';
+      
       let isWaitingResponse = false;
       let typingEl = null;
       let conversationStage = 0;
@@ -762,9 +778,12 @@ Larissa:`;
         
         const pixInfoHTML = `
           <div class="pix-info">
-            <p><strong>Chave PIX:</strong> 123.456.789-00</p>
-            <p><strong>Nome:</strong> Antonio Renimar Pinheiro Almeida</p>
+            <p><strong>Chave PIX (CPF):</strong> ${PIX_KEY}</p>
+            <p><strong>Nome:</strong> ${RECEIVER_NAME}</p>
             <p><strong>Valor:</strong> R$ ${price}</p>
+            <div class="pdf-warning">
+              <strong>Atenção:</strong> Se seu comprovante estiver em formato PDF, por favor, tire um print da tela ou converta para imagem antes de enviar. O sistema só aceita imagens (JPG, PNG) para verificação.
+            </div>
             <p>Pode me enviar o comprovante por aqui mesmo, tá bom? Assim que eu confirmar, libero tudo pra você rapidinho 💚</p>
           </div>
           <div class="comprovante-container">
@@ -801,65 +820,79 @@ Larissa:`;
           `;
           appendMessage("user", previewHTML);
           
-          // Simular verificação do comprovante (na prática seria OCR ou verificação manual)
-          verifyComprovante();
+          // Verificar comprovante com Tesseract.js
+          verifyComprovante(uploadedComprovante);
         };
         reader.readAsDataURL(file);
       }
 
-      function verifyComprovante() {
+      async function verifyComprovante(imageData) {
         showTypingIndicator();
         
-        // Simulação de verificação (em um caso real, seria necessário OCR ou análise manual)
-        setTimeout(() => {
+        try {
+          const expectedAmount = currentPackage === 'completo' ? '19,90' : '9,90';
+          
+          const { data: { text } } = await Tesseract.recognize(
+            imageData,
+            'por',
+            { logger: m => console.log(m) }
+          );
+          
           hideTypingIndicator();
           
-          // Simulando que o comprovante está correto
-          const success = Math.random() > 0.2; // 80% de chance de sucesso para demonstração
+          // Verificar se o texto contém o nome do recebedor e o valor correto
+          const hasReceiverName = text.includes(RECEIVER_NAME);
+          const hasCorrectAmount = text.includes(expectedAmount) || 
+                                 text.includes(expectedAmount.replace(',', '.')) || 
+                                 text.includes(`R$ ${expectedAmount}`) || 
+                                 text.includes(`R$${expectedAmount}`);
           
-          if (success) {
-            const price = currentPackage === 'completo' ? '19,90' : '9,90';
+          if (hasReceiverName && hasCorrectAmount) {
             const successHTML = `
               <div class="success-message">
                 ✅ Pagamento confirmado! Obrigada pela compra!
               </div>
               <p>Seu ${currentPackage === 'completo' ? 'Pacote Completo' : 'E-book com 50 receitas'} já está sendo enviado para seu e-mail.</p>
-              <p><strong>WhatsApp da Larissa:</strong> (98) 98172-9088</p>
-              ${currentPackage === 'completo' ? '<p><strong>Grupo exclusivo:</strong> <a href="https://chat.whatsapp.com/KGgsq9FPC5G4xZAveid8nW" target="_blank">Clique para entrar</a></p>' : ''}
+              <p><strong>Link para download:</strong> <a href="${currentPackage === 'completo' ? EBOOK_COMPLETO_LINK : EBOOK_BASICO_LINK}" target="_blank">Clique aqui para acessar</a></p>
+              <p><strong>WhatsApp da Larissa:</strong> <a href="https://wa.me/${WHATSAPP_LARISSA}" target="_blank">${formatPhoneNumber(WHATSAPP_LARISSA)}</a></p>
+              ${currentPackage === 'completo' ? `<p><strong>Grupo exclusivo:</strong> <a href="${GRUPO_WHATSAPP}" target="_blank">Clique para entrar</a></p>` : ''}
               <p>Se precisar de algo, é só chamar! 😊</p>
             `;
             appendMessage("bot", successHTML);
-            
-            // Resetar estado
-            isWaitingPayment = false;
-            uploadedComprovante = null;
           } else {
-            const errorHTML = `
-              <div class="error-message">
-                ❌ Ops, não consegui confirmar seu pagamento.
-              </div>
-              <p>Por favor, verifique se:</p>
-              <ul>
-                <li>O nome do recebedor é <strong>Antonio Renimar Pinheiro Almeida</strong></li>
-                <li>O valor está correto: <strong>R$ ${currentPackage === 'completo' ? '19,90' : '9,90'}</strong></li>
-              </ul>
-              <p>Pode enviar novamente o comprovante? Certifique-se que a imagem está nítida.</p>
-              <div class="comprovante-container">
-                <label for="uploadComprovante" class="upload-label">
-                  <img src="camera-icon.webp" alt="Enviar imagem" />
-                  Enviar novamente
-                </label>
-                <input type="file" accept="image/*" id="uploadComprovante" style="display: none" />
-              </div>
-            `;
-            appendMessage("bot", errorHTML);
+            let errorMessage = '<div class="error-message">❌ Ops, não consegui confirmar seu pagamento.</div><p>Por favor, verifique se:</p><ul>';
+            
+            if (!hasReceiverName) {
+              errorMessage += '<li>O nome do recebedor está correto: <strong>' + RECEIVER_NAME + '</strong></li>';
+            }
+            
+            if (!hasCorrectAmount) {
+              errorMessage += '<li>O valor está correto: <strong>R$ ' + expectedAmount + '</strong></li>';
+            }
+            
+            errorMessage += '</ul><p>Pode enviar novamente o comprovante? Certifique-se que a imagem está nítida e contém todas as informações.</p>';
+            errorMessage += '<div class="comprovante-container"><label for="uploadComprovante" class="upload-label"><img src="camera-icon.webp" alt="Enviar imagem" />Enviar novamente</label><input type="file" accept="image/*" id="uploadComprovante" style="display: none" /></div>';
+            
+            appendMessage("bot", errorMessage);
             
             // Configurar novamente o listener
             document.getElementById('uploadComprovante').addEventListener('change', function(e) {
               handleComprovanteUpload(e);
             });
           }
-        }, 2000);
+        } catch (error) {
+          hideTypingIndicator();
+          appendMessage("bot", `<div class="error-message">❌ Ocorreu um erro ao processar o comprovante. Por favor, tente novamente com uma imagem mais nítida.</div>`);
+          
+          // Configurar novamente o listener
+          document.getElementById('uploadComprovante').addEventListener('change', function(e) {
+            handleComprovanteUpload(e);
+          });
+        }
+      }
+
+      function formatPhoneNumber(phone) {
+        return phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
       }
 
       async function showBuyOptions() {
@@ -1289,7 +1322,7 @@ Larissa:`;
       }
 
       async function showHowToBuy() {
-        await simulateTyping("<p>A compra é bem simples e segura:</p><p>1. Escolha o e-book que deseja</p><p>2. Faça o pagamento via PIX</p><p>3. Envie o comprovante aqui no chat</p><p>4. Após confirmação, você recebe o e-book por e-mail em minutos.</p><p>5. Se não receber, verifique sua caixa de spam ou me avise.</p>");
+        await simulateTyping("<p>A compra é bem simples e segura:</p><p>1. Escolha o e-book que deseja</p><p>2. Faça o pagamento via PIX para a chave <strong>98981420070</strong> (CPF)</p><p>3. Envie o comprovante aqui no chat</p><p>4. Após confirmação, você recebe acesso imediato ao material.</p><p>5. Se não receber, verifique sua caixa de spam ou me avise.</p>");
         if (currentPackage) {
           await showBuyOptions();
         } else {
