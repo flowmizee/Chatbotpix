@@ -415,6 +415,7 @@
       let recordingTimer = null;
       let isWaitingPayment = false;
       let uploadedComprovante = null;
+      let comprovanteUploaded = false;
 
       const audioPrevia = new Audio('previa.mp3');
       const audioGuia = new Audio('guia.mp3');
@@ -771,6 +772,7 @@ Larissa:`;
         appendMessage("user", packageType === 'completo' ? 'Quero o Pacote Completo' : 'Quero as 50 Receitas');
         isWaitingPayment = true;
         currentPackage = packageType;
+        comprovanteUploaded = false;
         
         const price = packageType === 'completo' ? '19,90' : '9,90';
         
@@ -781,6 +783,7 @@ Larissa:`;
             <p><strong>Chave PIX (CPF):</strong> ${PIX_KEY}</p>
             <p><strong>Nome:</strong> ${RECEIVER_NAME}</p>
             <p><strong>Valor:</strong> R$ ${price}</p>
+            <p>Observação: O nome que aparece no Pix é Antonio Renimar Pinheiro Almeida, que é o responsável pelos pagamentos da minha equipe, tá bom? Pode fazer tranquila(o), tá tudo certinho ☺️</p>
             <div class="pdf-warning">
               <strong>Atenção:</strong> Se seu comprovante estiver em formato PDF, por favor, tire um print da tela ou converta para imagem antes de enviar. O sistema só aceita imagens (JPG, PNG) para verificação.
             </div>
@@ -788,8 +791,8 @@ Larissa:`;
           </div>
           <div class="comprovante-container">
             <label for="uploadComprovante" class="upload-label">
-              <img src="camera-icon.webp" alt="Enviar imagem" />
-              Enviar comprovante
+              <img src="camera.webp" alt="Enviar imagem" />
+              Enviar Comprovante
             </label>
             <input type="file" accept="image/*" id="uploadComprovante" style="display: none" />
           </div>
@@ -799,7 +802,10 @@ Larissa:`;
         
         // Configurar o listener para o upload do comprovante
         document.getElementById('uploadComprovante').addEventListener('change', function(e) {
-          handleComprovanteUpload(e);
+          if (!comprovanteUploaded) {
+            handleComprovanteUpload(e);
+            comprovanteUploaded = true;
+          }
         });
       }
 
@@ -852,7 +858,7 @@ Larissa:`;
               <div class="success-message">
                 ✅ Pagamento confirmado! Obrigada pela compra!
               </div>
-              <p>Seu ${currentPackage === 'completo' ? 'Pacote Completo' : 'E-book com 50 receitas'} já está sendo enviado para seu e-mail.</p>
+              <p>Seu ${currentPackage === 'completo' ? 'Pacote Completo' : 'E-book com 50 receitas'} já está disponível para download.</p>
               <p><strong>Link para download:</strong> <a href="${currentPackage === 'completo' ? EBOOK_COMPLETO_LINK : EBOOK_BASICO_LINK}" target="_blank">Clique aqui para acessar</a></p>
               <p><strong>WhatsApp da Larissa:</strong> <a href="https://wa.me/${WHATSAPP_LARISSA}" target="_blank">${formatPhoneNumber(WHATSAPP_LARISSA)}</a></p>
               ${currentPackage === 'completo' ? `<p><strong>Grupo exclusivo:</strong> <a href="${GRUPO_WHATSAPP}" target="_blank">Clique para entrar</a></p>` : ''}
@@ -871,13 +877,17 @@ Larissa:`;
             }
             
             errorMessage += '</ul><p>Pode enviar novamente o comprovante? Certifique-se que a imagem está nítida e contém todas as informações.</p>';
-            errorMessage += '<div class="comprovante-container"><label for="uploadComprovante" class="upload-label"><img src="camera-icon.webp" alt="Enviar imagem" />Enviar novamente</label><input type="file" accept="image/*" id="uploadComprovante" style="display: none" /></div>';
+            errorMessage += '<div class="comprovante-container"><label for="uploadComprovante" class="upload-label"><img src="camera.webp" alt="Enviar imagem" />Enviar Comprovante</label><input type="file" accept="image/*" id="uploadComprovante" style="display: none" /></div>';
             
             appendMessage("bot", errorMessage);
             
             // Configurar novamente o listener
+            comprovanteUploaded = false;
             document.getElementById('uploadComprovante').addEventListener('change', function(e) {
-              handleComprovanteUpload(e);
+              if (!comprovanteUploaded) {
+                handleComprovanteUpload(e);
+                comprovanteUploaded = true;
+              }
             });
           }
         } catch (error) {
@@ -885,8 +895,12 @@ Larissa:`;
           appendMessage("bot", `<div class="error-message">❌ Ocorreu um erro ao processar o comprovante. Por favor, tente novamente com uma imagem mais nítida.</div>`);
           
           // Configurar novamente o listener
+          comprovanteUploaded = false;
           document.getElementById('uploadComprovante').addEventListener('change', function(e) {
-            handleComprovanteUpload(e);
+            if (!comprovanteUploaded) {
+              handleComprovanteUpload(e);
+              comprovanteUploaded = true;
+            }
           });
         }
       }
