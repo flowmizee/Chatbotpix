@@ -1034,7 +1034,12 @@ Larissa:`;
             normalized.includes('pagamento') || normalized.includes('cobranca') ||
             normalized.includes('confirmar pagamento') || normalized.includes('recebimento'))) {
           hideTypingIndicator();
-          await simulateTyping("Após confirmação do pagamento via PIX, envio o e-book por e-mail em minutos. Se não receber, verifique spam ou avise-me.");
+          // RESPOSTA MODIFICADA (AJUSTE SOLICITADO)
+          if (currentPackage === 'completo') {
+            await simulateTyping("Assim que seu pagamento for confirmado, te envio <strong>tudo aqui no chat</strong> mesmo! Você receberá:<br>✔️ O link para baixar o <strong>Guia Completo com 125 Receitas + 6 Bônus</strong><br>✔️ Convite para o <strong>grupo exclusivo</strong> no WhatsApp<br>✔️ Meu contato direto para suporte<br><br>Fica tranquilo(a) que eu te guio passo a passo!");
+          } else {
+            await simulateTyping("Assim que seu pagamento for confirmado, vou te enviar <strong>tudo direto aqui no chat</strong>! Você receberá:<br>✔️ O link para baixar seu <strong>E-book com 50 Receitas</strong> (em PDF)<br>✔️ Meu WhatsApp pessoal para tirar dúvidas<br><br>É super rápido! Se o link não aparecer em 2 minutinhos, me avisa que eu resolvo. 💛");
+          }
           if (currentPackage === 'completo') {
             appendMessage("bot", `
               <div class="buy-options">
