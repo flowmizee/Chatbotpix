@@ -397,6 +397,7 @@
       const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
       const PIX_KEY = '98981420070';
       const RECEIVER_NAME = 'Antonio Renimar Pinheiro Almeida';
+      const RECEIVER_KEYWORDS = ['antonio', 'renimar', 'pinheiro', 'almeida']; // Palavras-chave para validação
       const EBOOK_BASICO_LINK = 'https://drive.google.com/drive/folders/1v86_qVHA61RQR8X1gtAv3xaxSxKnwvXb';
       const EBOOK_COMPLETO_LINK = 'https://drive.google.com/drive/folders/1vAot8BBYUrWqPvYeCYUVMcvQxAybNTmF';
       const WHATSAPP_LARISSA = '98981729088';
@@ -843,8 +844,10 @@ Larissa:`;
           
           hideTypingIndicator();
           
-          // Verificar se o texto contém o nome do recebedor e o valor correto
-          const hasReceiverName = text.includes(RECEIVER_NAME);
+          // Verificar se o texto contém qualquer uma das palavras-chave do nome do recebedor e o valor correto
+          const normalizedText = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          const hasReceiverName = RECEIVER_KEYWORDS.some(keyword => normalizedText.includes(keyword));
+          
           const hasCorrectAmount = text.includes(expectedAmount) || 
                                  text.includes(expectedAmount.replace(',', '.')) || 
                                  text.includes(`R$ ${expectedAmount}`) || 
@@ -863,17 +866,13 @@ Larissa:`;
             `;
             appendMessage("bot", successHTML);
           } else {
-            let errorMessage = '<div class="error-message">❌ Ops, não consegui confirmar seu pagamento.</div><p>Por favor, verifique se:</p><ul>';
-            
-            if (!hasReceiverName) {
-              errorMessage += '<li>O nome do recebedor está correto: <strong>' + RECEIVER_NAME + '</strong></li>';
-            }
-            
-            if (!hasCorrectAmount) {
-              errorMessage += '<li>O valor está correto: <strong>R$ ' + expectedAmount + '</strong></li>';
-            }
-            
-            errorMessage += '</ul><p>Pode enviar novamente o comprovante? Certifique-se que a imagem está nítida e contém todas as informações.</p>';
+            let errorMessage = '<div class="error-message">❌ Não consegui confirmar seu pagamento automaticamente</div>';
+            errorMessage += '<p>Por favor, verifique se:</p>';
+            errorMessage += '<ul>';
+            errorMessage += '<li>Você enviou o comprovante do Pix para a chave <strong>' + PIX_KEY + '</strong> (CPF)</li>';
+            errorMessage += '<li>O valor está correto: <strong>R$ ' + expectedAmount + '</strong></li>';
+            errorMessage += '</ul>';
+            errorMessage += '<p>Se já conferiu tudo e ainda assim não foi validado, pode enviar novamente o comprovante? Certifique-se que a imagem está nítida e contém todas as informações.</p>';
             errorMessage += '<div class="comprovante-container"><label for="uploadComprovante" class="upload-label"><img src="camera.webp" alt="Enviar imagem" />Enviar Comprovante</label><input type="file" accept="image/*" id="uploadComprovante" style="display: none" /></div>';
             
             appendMessage("bot", errorMessage);
