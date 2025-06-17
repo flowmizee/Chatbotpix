@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
     <title>Chat Web Estilo WhatsApp</title>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js"></script>
     <style>
       html, body {
         margin: 0;
@@ -324,6 +325,7 @@
         border-radius: 20px;
         cursor: pointer;
         margin-top: 10px;
+        margin-right: 10px;
       }
       .upload-label img {
         width: 20px;
@@ -331,7 +333,7 @@
         vertical-align: middle;
         margin-right: 8px;
       }
-      #uploadComprovante {
+      #uploadComprovanteFoto, #uploadComprovantePDF {
         display: none;
       }
       .pix-info {
@@ -374,6 +376,12 @@
         margin-top: 10px;
         font-size: 14px;
       }
+      .upload-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+      }
     </style>
   </head>
   <body>
@@ -393,6 +401,9 @@
       </div>
     </div>
     <script>
+      // Configuração do PDF.js
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.worker.min.js';
+      
       const GEMINI_API_KEY = 'AIzaSyBZWq79odwHX5NnccXU_1Y9_SSYAAuPg3Q';
       const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
       const PIX_KEY = '98981420070';
@@ -784,55 +795,134 @@ Larissa:`;
             <p><strong>🟢 Obs.:</strong> O nome que aparece é do responsável pelos pagamentos da minha equipe, tá bom? Pode fazer tranquila(o), tá tudo certinho!</p>
             <p><strong>💰 Valor:</strong> R$ ${price}</p>
             <div class="pdf-warning">
-              <strong>📷 Atenção:</strong> Se o comprovante estiver em <strong>PDF</strong>, tire um print ou converta em imagem (JPG ou PNG). O sistema só aceita imagens para verificação.
+              <strong>📄 Atenção:</strong> Você pode enviar o comprovante tanto em foto (JPG/PNG) quanto em PDF. O sistema irá verificar automaticamente.
             </div>
           </div>
           <div class="comprovante-container">
-            <label for="uploadComprovante" class="upload-label">
-              <img src="camera.webp" alt="Enviar imagem" />
-              Enviar Comprovante
-            </label>
-            <input type="file" accept="image/*" id="uploadComprovante" style="display: none" />
+            <div class="upload-buttons">
+              <label for="uploadComprovanteFoto" class="upload-label">
+                <img src="camera.webp" alt="Enviar imagem" />
+                Enviar Comprovante em Foto
+              </label>
+              <label for="uploadComprovantePDF" class="upload-label">
+                <img src="pdf-icon.webp" alt="Enviar PDF" />
+                Enviar Comprovante em PDF
+              </label>
+            </div>
+            <input type="file" accept="image/*" id="uploadComprovanteFoto" style="display: none" />
+            <input type="file" accept=".pdf" id="uploadComprovantePDF" style="display: none" />
           </div>
         `;
         
         appendMessage("bot", pixInfoHTML);
         
-        // Configurar o listener para o upload do comprovante
-        document.getElementById('uploadComprovante').addEventListener('change', function(e) {
+        // Configurar os listeners para os uploads
+        document.getElementById('uploadComprovanteFoto').addEventListener('change', function(e) {
           if (!comprovanteUploaded) {
-            handleComprovanteUpload(e);
+            handleComprovanteUpload(e, 'image');
+            comprovanteUploaded = true;
+          }
+        });
+        
+        document.getElementById('uploadComprovantePDF').addEventListener('change', function(e) {
+          if (!comprovanteUploaded) {
+            handleComprovanteUpload(e, 'pdf');
             comprovanteUploaded = true;
           }
         });
       }
 
-      function handleComprovanteUpload(event) {
+      async function handleComprovanteUpload(event, type) {
         const file = event.target.files[0];
         if (!file) return;
         
+        showTypingIndicator();
+        
+        try {
+          if (type === 'pdf') {
+            await processPDFComprovante(file);
+          } else {
+            await processImageComprovante(file);
+          }
+        } catch (error) {
+          console.error("Erro ao processar comprovante:", error);
+          hideTypingIndicator();
+          showComprovanteError();
+        }
+      }
+
+      async function processImageComprovante(file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
-          uploadedComprovante = e.target.result;
-          
-          // Mostrar preview do comprovante
-          const previewHTML = `
-            <div class="comprovante-container">
-              <p>Comprovante enviado:</p>
-              <img src="${uploadedComprovante}" class="comprovante-preview">
-            </div>
-          `;
-          appendMessage("user", previewHTML);
-          
-          // Verificar comprovante com Tesseract.js
-          verifyComprovante(uploadedComprovante);
-        };
-        reader.readAsDataURL(file);
+        
+        return new Promise((resolve, reject) => {
+          reader.onload = async function(e) {
+            try {
+              uploadedComprovante = e.target.result;
+              
+              // Mostrar preview do comprovante
+              const previewHTML = `
+                <div class="comprovante-container">
+                  <p>Comprovante enviado (imagem):</p>
+                  <img src="${uploadedComprovante}" class="comprovante-preview">
+                </div>
+              `;
+              appendMessage("user", previewHTML);
+              
+              // Verificar comprovante com Tesseract.js
+              await verifyComprovante(uploadedComprovante);
+              resolve();
+            } catch (error) {
+              reject(error);
+            }
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      }
+
+      async function processPDFComprovante(file) {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+        let extractedText = '';
+        
+        // Extrair texto de todas as páginas
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const textContent = await page.getTextContent();
+          const strings = textContent.items.map(item => item.str);
+          extractedText += strings.join(' ') + '\n';
+        }
+        
+        // Criar uma imagem da primeira página para mostrar como preview
+        const page = await pdf.getPage(1);
+        const viewport = page.getViewport({ scale: 1.0 });
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        
+        await page.render({
+          canvasContext: context,
+          viewport: viewport
+        }).promise;
+        
+        const previewImage = canvas.toDataURL('image/jpeg');
+        uploadedComprovante = previewImage;
+        
+        // Mostrar preview do PDF
+        const previewHTML = `
+          <div class="comprovante-container">
+            <p>Comprovante enviado (PDF - página 1):</p>
+            <img src="${previewImage}" class="comprovante-preview">
+          </div>
+        `;
+        appendMessage("user", previewHTML);
+        
+        // Verificar o texto extraído do PDF
+        await verifyComprovanteText(extractedText);
       }
 
       async function verifyComprovante(imageData) {
-        showTypingIndicator();
-        
         try {
           const expectedAmount = currentPackage === 'completo' ? '19,90' : '9,90';
           
@@ -842,63 +932,88 @@ Larissa:`;
             { logger: m => console.log(m) }
           );
           
-          hideTypingIndicator();
-          
-          // Verificar se o texto contém qualquer uma das palavras-chave do nome do recebedor e o valor correto
-          const normalizedText = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-          const hasReceiverName = RECEIVER_KEYWORDS.some(keyword => normalizedText.includes(keyword));
-          
-          const hasCorrectAmount = text.includes(expectedAmount) || 
-                                 text.includes(expectedAmount.replace(',', '.')) || 
-                                 text.includes(`R$ ${expectedAmount}`) || 
-                                 text.includes(`R$${expectedAmount}`);
-          
-          if (hasReceiverName && hasCorrectAmount) {
-            const successHTML = `
-              <div class="success-message">
-                ✅ Pagamento confirmado! Obrigada pela compra!
-              </div>
-              <p>Seu ${currentPackage === 'completo' ? 'Pacote Completo' : 'E-book com 50 receitas'} já está disponível para download.</p>
-              <p><strong>Link para download:</strong> <a href="${currentPackage === 'completo' ? EBOOK_COMPLETO_LINK : EBOOK_BASICO_LINK}" target="_blank">Clique aqui para acessar</a></p>
-              <p><strong>WhatsApp da Larissa:</strong> <a href="https://wa.me/${WHATSAPP_LARISSA}" target="_blank">${formatPhoneNumber(WHATSAPP_LARISSA)}</a></p>
-              ${currentPackage === 'completo' ? `<p><strong>Grupo exclusivo:</strong> <a href="${GRUPO_WHATSAPP}" target="_blank">Clique para entrar</a></p>` : ''}
-              <p>Se precisar de algo, é só chamar! 😊</p>
-            `;
-            appendMessage("bot", successHTML);
-          } else {
-            let errorMessage = '<div class="error-message">❌ Não consegui confirmar seu pagamento automaticamente</div>';
-            errorMessage += '<p>Por favor, verifique se:</p>';
-            errorMessage += '<ul>';
-            errorMessage += '<li>Você enviou o comprovante do Pix para a chave <strong>' + PIX_KEY + '</strong> (CPF)</li>';
-            errorMessage += '<li>O valor está correto: <strong>R$ ' + expectedAmount + '</strong></li>';
-            errorMessage += '</ul>';
-            errorMessage += '<p>Se já conferiu tudo e ainda assim não foi validado, pode enviar novamente o comprovante? Certifique-se que a imagem está nítida e contém todas as informações.</p>';
-            errorMessage += '<div class="comprovante-container"><label for="uploadComprovante" class="upload-label"><img src="camera.webp" alt="Enviar imagem" />Enviar Comprovante</label><input type="file" accept="image/*" id="uploadComprovante" style="display: none" /></div>';
-            
-            appendMessage("bot", errorMessage);
-            
-            // Configurar novamente o listener
-            comprovanteUploaded = false;
-            document.getElementById('uploadComprovante').addEventListener('change', function(e) {
-              if (!comprovanteUploaded) {
-                handleComprovanteUpload(e);
-                comprovanteUploaded = true;
-              }
-            });
-          }
+          await verifyComprovanteText(text);
         } catch (error) {
-          hideTypingIndicator();
-          appendMessage("bot", `<div class="error-message">❌ Ocorreu um erro ao processar o comprovante. Por favor, tente novamente com uma imagem mais nítida.</div>`);
-          
-          // Configurar novamente o listener
-          comprovanteUploaded = false;
-          document.getElementById('uploadComprovante').addEventListener('change', function(e) {
-            if (!comprovanteUploaded) {
-              handleComprovanteUpload(e);
-              comprovanteUploaded = true;
-            }
-          });
+          console.error("Erro ao verificar comprovante:", error);
+          throw error;
         }
+      }
+
+      async function verifyComprovanteText(text) {
+        hideTypingIndicator();
+        
+        const expectedAmount = currentPackage === 'completo' ? '19,90' : '9,90';
+        
+        // Verificar se o texto contém qualquer uma das palavras-chave do nome do recebedor e o valor correto
+        const normalizedText = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const hasReceiverName = RECEIVER_KEYWORDS.some(keyword => normalizedText.includes(keyword));
+        
+        const hasCorrectAmount = text.includes(expectedAmount) || 
+                               text.includes(expectedAmount.replace(',', '.')) || 
+                               text.includes(`R$ ${expectedAmount}`) || 
+                               text.includes(`R$${expectedAmount}`);
+        
+        if (hasReceiverName && hasCorrectAmount) {
+          const successHTML = `
+            <div class="success-message">
+              ✅ Pagamento confirmado! Obrigada pela compra!
+            </div>
+            <p>Seu ${currentPackage === 'completo' ? 'Pacote Completo' : 'E-book com 50 receitas'} já está disponível para download.</p>
+            <p><strong>Link para download:</strong> <a href="${currentPackage === 'completo' ? EBOOK_COMPLETO_LINK : EBOOK_BASICO_LINK}" target="_blank">Clique aqui para acessar</a></p>
+            <p><strong>WhatsApp da Larissa:</strong> <a href="https://wa.me/${WHATSAPP_LARISSA}" target="_blank">${formatPhoneNumber(WHATSAPP_LARISSA)}</a></p>
+            ${currentPackage === 'completo' ? `<p><strong>Grupo exclusivo:</strong> <a href="${GRUPO_WHATSAPP}" target="_blank">Clique para entrar</a></p>` : ''}
+            <p>Se precisar de algo, é só chamar! 😊</p>
+          `;
+          appendMessage("bot", successHTML);
+        } else {
+          showComprovanteError();
+        }
+      }
+
+      function showComprovanteError() {
+        const expectedAmount = currentPackage === 'completo' ? '19,90' : '9,90';
+        
+        let errorMessage = '<div class="error-message">❌ Não consegui confirmar seu pagamento automaticamente</div>';
+        errorMessage += '<p>Por favor, verifique se:</p>';
+        errorMessage += '<ul>';
+        errorMessage += '<li>Você enviou o comprovante do Pix para a chave <strong>' + PIX_KEY + '</strong> (CPF)</li>';
+        errorMessage += '<li>O valor está correto: <strong>R$ ' + expectedAmount + '</strong></li>';
+        errorMessage += '</ul>';
+        errorMessage += '<p>Se já conferiu tudo e ainda assim não foi validado, pode enviar novamente o comprovante?</p>';
+        errorMessage += `
+          <div class="comprovante-container">
+            <div class="upload-buttons">
+              <label for="uploadComprovanteFoto" class="upload-label">
+                <img src="camera.webp" alt="Enviar imagem" />
+                Enviar Comprovante em Foto
+              </label>
+              <label for="uploadComprovantePDF" class="upload-label">
+                <img src="pdf-icon.webp" alt="Enviar PDF" />
+                Enviar Comprovante em PDF
+              </label>
+            </div>
+            <input type="file" accept="image/*" id="uploadComprovanteFoto" style="display: none" />
+            <input type="file" accept=".pdf" id="uploadComprovantePDF" style="display: none" />
+          </div>
+        `;
+        
+        appendMessage("bot", errorMessage);
+        
+        // Configurar novamente os listeners
+        comprovanteUploaded = false;
+        document.getElementById('uploadComprovanteFoto').addEventListener('change', function(e) {
+          if (!comprovanteUploaded) {
+            handleComprovanteUpload(e, 'image');
+            comprovanteUploaded = true;
+          }
+        });
+        
+        document.getElementById('uploadComprovantePDF').addEventListener('change', function(e) {
+          if (!comprovanteUploaded) {
+            handleComprovanteUpload(e, 'pdf');
+            comprovanteUploaded = true;
+          }
+        });
       }
 
       function formatPhoneNumber(phone) {
