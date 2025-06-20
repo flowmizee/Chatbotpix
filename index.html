@@ -6,13 +6,6 @@
     <title>Chat Web Estilo WhatsApp</title>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js"></script>
-    <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){ 
-      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)}; 
-      t=l.createElement(r);t.async=1;t.src=" https://www.clarity.ms/tag/ "+i; 
-      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y); 
-    })(window, document, "clarity", "script", "s28w44cz1e"); 
-    </script>
     <style>
       html, body {
         margin: 0;
@@ -407,6 +400,15 @@
         </button>
       </div>
     </div>
+
+    <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "s28w44cz1e");
+    </script>
+
     <script>
       // Configuração do PDF.js
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.worker.min.js';
@@ -768,7 +770,7 @@ Larissa:`;
           } else {
             // Nova mensagem para "Mais informações" no e-book de 50 receitas
             await simulateTyping("Esse e-book traz 50 receitas práticas, saudáveis e 100% sem glúten e sem lactose — perfeitas pro dia a dia de quem busca leveza e sabor! 🥰");
-            await simulateTyping("Alguns dos pães que você vai encontrar são:<br>✨ Pão Rústico de Arroz e Linhaça<br>✨ Pão de Milho de Frigideira<br>✨ Pão de Batata na Airfryer<br>✨ Pão Croissant Macio<br>✨ Pão de Aveia com Sementes<br>✨ Pão de Amendoim com Coco<br>✨ Pão de Batata Doce com Gergelim<br>✨ Pão de Mandioca com Cebola e Salsa<br>✨ Pão de Quinoa e Gergelim");
+            await simulateTyping("Alguns dos pães que você vai encontrar são:<br>✨ Pão Rústico de Arroz e Linhaça<br>✨ Pão de Milho de Frigideira<br>✨ Pão de Batata na Airfryer<br>✨ Pão Croissant Macio<br>✨ Pão de Aveia com Sementes<br>✨ Pão de Amendoim com Coco<br>✨ Pão de Mandioca com Cebola e Salsa<br>✨ Pão de Quinoa e Gergelim");
             await simulateTyping("E muito mais! São receitas fáceis, gostosas e com aquele toque saudável que faz a diferença. 😋💚");
             await simulateTyping("🥰 Que bom que você escolheu começar com as 50 Receitas Saudáveis! Esse E-Book está recheado de delícias sem glúten e sem lactose, com ingredientes fáceis e resultados incríveis.<br>Clique no botão abaixo para finalizar.");
           }
@@ -1273,126 +1275,6 @@ Larissa:`;
                 GARANTIR O EBOOK - COMPLETO
               </button>
             </div>`);
-          isWaitingResponse = false;
-          return;
-        }
-        // Suporte técnico
-        if (normalized.includes('suporte') || normalized.includes('profissional') || normalized.includes('especialista')) {
-          hideTypingIndicator();
-          await simulateTyping("Suporte via WhatsApp: no Básico falo diretamente com você; no Completo, além do contato direto, você também tem acesso à comunidade exclusiva.");
-          if (currentPackage === 'completo') {
-            appendMessage("bot", `
-              <div class="buy-options">
-                <button class="buy-button" onclick="handlePurchaseClick('completo')">
-                  GARANTIR O EBOOK - COMPLETO
-                </button>
-              </div>`);
-          } else {
-            await showBuyOptions();
-          }
-          isWaitingResponse = false;
-          return;
-        }
-        // Conteúdo sem clicar botão
-        if ((normalized.includes('conteudo') || normalized.includes('o que tem') || normalized.includes('quais') || normalized.includes('oq vem') || normalized.includes('oque vem') || normalized.includes('oque tem')) &&
-            normalized.includes('pacote completo')) {
-          hideTypingIndicator();
-          if (!shownCompletoDetails) {
-            shownCompletoDetails = true;
-            await simulateTyping("O Pacote Completo inclui Guia Pães Sem Glúten com 125 receitas, acesso vitalício com todas as atualizações, comunidade exclusiva no WhatsApp, contato direto comigo e 6 e-books extras. Tudo por R$ 19,90.");
-          } else {
-            await simulateTyping("Pacote Completo: 125 receitas sem glúten + comunidade + contato direto + 6 bônus + acesso vitalício. R$ 19,90.");
-          }
-          currentPackage = 'completo';
-          appendMessage("bot", `
-            <div class="buy-options">
-              <button class="buy-button" onclick="handlePurchaseClick('completo')">
-                GARANTIR O EBOOK - COMPLETO
-              </button>
-            </div>`);
-          isWaitingResponse = false;
-          return;
-        }
-        if ((normalized.includes('conteudo') || normalized.includes('o que tem') || normalized.includes('quais') || normalized.includes('oq vem') || normalized.includes('oque vem') || normalized.includes('oque tem')) &&
-            (normalized.includes('50 receitas') || normalized.includes('ebook basico') || normalized.includes('basico'))) {
-          hideTypingIndicator();
-          if (!shownBasicoDetails) {
-            shownBasicoDetails = true;
-            await simulateTyping("O Ebook Básico oferece 50 receitas saborosas, sem glúten e sem lactose, ingredientes de fácil acesso, suporte via WhatsApp e acesso vitalício. Por apenas R$ 9,90.");
-          } else {
-            await simulateTyping("Ebook Básico: 50 receitas sem glúten e sem lactose, suporte e acesso vitalício. R$ 9,90.");
-          }
-          currentPackage = 'basico';
-          await showBuyOptions();
-          isWaitingResponse = false;
-          return;
-        }
-        // Interesse em ver fotos/exemplos das receitas
-        if (normalized.includes('exemplo') || normalized.includes('amostra') || normalized.includes('foto') || 
-            normalized.includes('imagem') || normalized.includes('ver como') || normalized.includes('como são') ||
-            normalized.includes('mostra') || normalized.includes('visualizar') || normalized.includes('visual')) {
-          hideTypingIndicator();
-          await simulateTyping("Claro! Dá uma olhadinha nessas delícias que você vai aprender a fazer 😍");
-          
-          // Mostrar as imagens das receitas
-          const imagesHTML = `
-            <div style="margin-top: 10px;">
-              <img src="pao1.webp" alt="Pão de Milho de Frigideira" class="preview-image">
-              <img src="pao2.webp" alt="Pão de Batata na Airfryer" class="preview-image">
-              <img src="pao3.webp" alt="Pão Croissant Macio" class="preview-image">
-              <img src="pao4.webp" alt="Pão de Aveia com Sementes" class="preview-image">
-              <img src="pao5.webp" alt="Pão de Amendoim com Coco" class="preview-image">
-            </div>
-          `;
-          appendMessage("bot", imagesHTML);
-          
-          if (currentPackage === 'completo') {
-            appendMessage("bot", `
-              <div class="buy-options">
-                <button class="buy-button" onclick="handlePurchaseClick('completo')">
-                  GARANTIR O EBOOK - COMPLETO
-                </button>
-              </div>`);
-          } else if (currentPackage === 'basico') {
-            await showBuyOptions();
-          } else {
-            appendMessage("bot", `
-              <div class="option-buttons">
-                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">As 50 Receitas ❤️</button>
-                <button class="option-button" onclick="handleOptionClick('Pacote Completo')">Pacote Completo 🥹</button>
-              </div>`);
-          }
-          isWaitingResponse = false;
-          return;
-        }
-        // Interesse direto
-        const purchaseIntent = detectPurchaseIntent(text);
-        if (purchaseIntent) {
-          hideTypingIndicator();
-          if (purchaseIntent.package === 'completo') {
-            currentPackage = 'completo';
-            if (!shownCompletoDetails) {
-              shownCompletoDetails = true;
-              await simulateTyping("Pacote Completo: 125 receitas, comunidade, contato direto e 6 bônus. R$ 19,90.");
-            } else {
-              await simulateTyping("Pacote Completo por R$ 19,90.");
-            }
-            appendMessage("bot", `
-              <div class="buy-options">
-                <button class="buy-button" onclick="handlePurchaseClick('completo')">
-                  GARANTIR O EBOOK - COMPLETO
-                </button>
-              </div>`);
-          } else {
-            currentPackage = 'basico';
-            if (!shownBasicoDetails) {
-              shownBasicoDetails = true;
-              await simulateTyping("Ebook Básico: 50 receitas sem glúten e sem lactose. R$ 9,90.");
-            } else {
-              await simulateTyping("Ebook Básico por R$ 9,90.");
-            }
-            await showBuyOptions();
-          }
           isWaitingResponse = false;
           return;
         }
