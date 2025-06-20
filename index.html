@@ -411,8 +411,8 @@
       const RECEIVER_KEYWORDS = ['antonio', 'renimar', 'pinheiro', 'almeida']; // Palavras-chave para validação
       const EBOOK_BASICO_LINK = 'https://drive.google.com/drive/folders/1v86_qVHA61RQR8X1gtAv3xaxSxKnwvXb';
       const EBOOK_COMPLETO_LINK = 'https://drive.google.com/drive/folders/1vAot8BBYUrWqPvYeCYUVMcvQxAybNTmF';
-      const WHATSAPP_LARISSA = '98981729088';
-      const GRUPO_WHATSAPP = 'https://chat.whatsapp.com/KGgsq9FPC5G4xZAveid8nW';
+      const WHATSAPP_LARISSA = '98981507823';
+      const GRUPO_WHATSAPP = 'https://chat.whatsapp.com/HgZNILSst31K2pQSXWiAAp';
       
       let isWaitingResponse = false;
       let typingEl = null;
@@ -836,6 +836,9 @@ Larissa:`;
         const file = event.target.files[0];
         if (!file) return;
         
+        // Mostrar mensagem de validação
+        appendMessage("bot", "🔄 Só um momento…<br>Estou validando seu pagamento. Assim que for confirmado, te libero o acesso! 😉");
+        
         showTypingIndicator();
         
         try {
@@ -960,7 +963,7 @@ Larissa:`;
             </div>
             <p>Seu ${currentPackage === 'completo' ? 'Pacote Completo' : 'E-book com 50 receitas'} já está disponível para download.</p>
             <p><strong>Link para download:</strong> <a href="${currentPackage === 'completo' ? EBOOK_COMPLETO_LINK : EBOOK_BASICO_LINK}" target="_blank">Clique aqui para acessar</a></p>
-            <p><strong>WhatsApp da Larissa:</strong> <a href="https://wa.me/${WHATSAPP_LARISSA}" target="_blank">${formatPhoneNumber(WHATSAPP_LARISSA)}</a></p>
+            <p><strong>Meu WhatsApp:</strong> <a href="https://wa.me/${WHATSAPP_LARISSA}" target="_blank">${formatPhoneNumber(WHATSAPP_LARISSA)}</a></p>
             ${currentPackage === 'completo' ? `<p><strong>Grupo exclusivo:</strong> <a href="${GRUPO_WHATSAPP}" target="_blank">Clique para entrar</a></p>` : ''}
             <p>Se precisar de algo, é só chamar! 😊</p>
           `;
