@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-    <title>Chat Web Estilo WhatsApp</title>
+    <title>Chef Larissa Campos</title>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js"></script>
     <style>
@@ -408,7 +408,7 @@
       const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
       const PIX_KEY = '98981420070';
       const RECEIVER_NAME = 'Antonio Renimar Pinheiro Almeida';
-      const RECEIVER_KEYWORDS = ['antonio', 'renimar', 'pinheiro', 'almeida']; // Palavras-chave para validação
+      const RECEIVER_KEYWORDS = ['antonio', 'renimar', 'pinheiro', 'almeida'];
       const EBOOK_BASICO_LINK = 'https://drive.google.com/drive/folders/1v86_qVHA61RQR8X1gtAv3xaxSxKnwvXb';
       const EBOOK_COMPLETO_LINK = 'https://drive.google.com/drive/folders/1vAot8BBYUrWqPvYeCYUVMcvQxAybNTmF';
       const WHATSAPP_LARISSA = '98981507823';
@@ -836,16 +836,42 @@ Larissa:`;
         const file = event.target.files[0];
         if (!file) return;
         
-        // Mostrar mensagem de validação
-        appendMessage("bot", "🔄 Só um momento…<br>Estou validando seu pagamento. Assim que for confirmado, te libero o acesso! 😉");
-        
-        showTypingIndicator();
-        
         try {
           if (type === 'pdf') {
+            // Processar PDF primeiro para mostrar o comprovante
             await processPDFComprovante(file);
           } else {
+            // Processar imagem primeiro para mostrar o comprovante
             await processImageComprovante(file);
+          }
+          
+          // SÓ DEPOIS de mostrar o comprovante, exibir a mensagem do bot
+          appendMessage("bot", "🔄 Só um momento…<br>Estou validando seu pagamento. Assim que for confirmado, te libero o acesso! 😉");
+          
+          showTypingIndicator();
+          
+          // Agora fazer a validação
+          if (type === 'pdf') {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+            let extractedText = '';
+            
+            for (let i = 1; i <= pdf.numPages; i++) {
+              const page = await pdf.getPage(i);
+              const textContent = await page.getTextContent();
+              const strings = textContent.items.map(item => item.str);
+              extractedText += strings.join(' ') + '\n';
+            }
+            
+            await verifyComprovanteText(extractedText);
+          } else {
+            const reader = new FileReader();
+            const imageData = await new Promise((resolve, reject) => {
+              reader.onload = e => resolve(e.target.result);
+              reader.onerror = reject;
+              reader.readAsDataURL(file);
+            });
+            await verifyComprovante(imageData);
           }
         } catch (error) {
           console.error("Erro ao processar comprovante:", error);
@@ -856,27 +882,17 @@ Larissa:`;
 
       async function processImageComprovante(file) {
         const reader = new FileReader();
-        
         return new Promise((resolve, reject) => {
-          reader.onload = async function(e) {
-            try {
-              uploadedComprovante = e.target.result;
-              
-              // Mostrar preview do comprovante
-              const previewHTML = `
-                <div class="comprovante-container">
-                  <p>Comprovante enviado (imagem):</p>
-                  <img src="${uploadedComprovante}" class="comprovante-preview">
-                </div>
-              `;
-              appendMessage("user", previewHTML);
-              
-              // Verificar comprovante com Tesseract.js
-              await verifyComprovante(uploadedComprovante);
-              resolve();
-            } catch (error) {
-              reject(error);
-            }
+          reader.onload = function(e) {
+            uploadedComprovante = e.target.result;
+            const previewHTML = `
+              <div class="comprovante-container">
+                <p>Comprovante enviado (imagem):</p>
+                <img src="${uploadedComprovante}" class="comprovante-preview">
+              </div>
+            `;
+            appendMessage("user", previewHTML);
+            resolve();
           };
           reader.onerror = reject;
           reader.readAsDataURL(file);
@@ -886,15 +902,6 @@ Larissa:`;
       async function processPDFComprovante(file) {
         const arrayBuffer = await file.arrayBuffer();
         const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
-        let extractedText = '';
-        
-        // Extrair texto de todas as páginas
-        for (let i = 1; i <= pdf.numPages; i++) {
-          const page = await pdf.getPage(i);
-          const textContent = await page.getTextContent();
-          const strings = textContent.items.map(item => item.str);
-          extractedText += strings.join(' ') + '\n';
-        }
         
         // Criar uma imagem da primeira página para mostrar como preview
         const page = await pdf.getPage(1);
@@ -920,9 +927,6 @@ Larissa:`;
           </div>
         `;
         appendMessage("user", previewHTML);
-        
-        // Verificar o texto extraído do PDF
-        await verifyComprovanteText(extractedText);
       }
 
       async function verifyComprovante(imageData) {
