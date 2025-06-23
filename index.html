@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-    <title>Chat Web WhatsApp</title>
+    <title>Chat Web Estilo WhatsApp</title>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js"></script>
-    
+
     <!-- Microsoft Clarity Tracking Code -->
     <script type="text/javascript">
       (function(c,l,a,r,i,t,y){
@@ -203,6 +203,66 @@
         margin-top: 10px;
         border: 2px solid #075E54;
       }
+      .upload-label {
+        display: inline-block;
+        padding: 10px 15px;
+        background-color: #075E54;
+        color: white;
+        border-radius: 20px;
+        cursor: pointer;
+        margin-top: 10px;
+        margin-right: 10px;
+      }
+      #uploadComprovanteFoto, #uploadComprovantePDF {
+        display: none;
+      }
+      .pix-info {
+        background-color: #f0f0f0;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 15px;
+      }
+      .pix-info p {
+        margin: 5px 0;
+      }
+      .pix-info strong {
+        color: #075E54;
+      }
+      .comprovante-container {
+        margin-top: 15px;
+      }
+      .comprovante-preview {
+        max-width: 100%;
+        max-height: 200px;
+        border-radius: 8px;
+        margin-top: 10px;
+        border: 1px solid #ccc;
+      }
+      .success-message {
+        color: #25D366;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+      .error-message {
+        color: #f44336;
+        font-weight: bold;
+        margin-top: 10px;
+      }
+      .pdf-warning {
+        background-color: #fff3cd;
+        color: #856404;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+        font-size: 14px;
+      }
+      .upload-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+      }
+      /* NOVO ESTILO DO ÁUDIO - IGUAL AO WHATSAPP */
       .audio-message {
         display: flex;
         align-items: center;
@@ -310,12 +370,6 @@
         0%, 100% { opacity: 1; }
         50% { opacity: 0.3; }
       }
-      .buy-options {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 15px;
-      }
       .mic-icon {
         position: absolute;
         left: 15px;
@@ -328,78 +382,13 @@
         transform: translateY(-50%);
         pointer-events: none;
       }
-      .upload-label {
-        display: inline-block;
-        padding: 10px 15px;
-        background-color: #075E54;
-        color: white;
-        border-radius: 20px;
-        cursor: pointer;
-        margin-top: 10px;
-        margin-right: 10px;
-      }
-      .upload-label img {
-        width: 20px;
-        height: 20px;
-        vertical-align: middle;
-        margin-right: 8px;
-      }
-      #uploadComprovanteFoto, #uploadComprovantePDF {
-        display: none;
-      }
-      .pix-info {
-        background-color: #f0f0f0;
-        padding: 15px;
-        border-radius: 10px;
-        margin-top: 15px;
-      }
-      .pix-info p {
-        margin: 5px 0;
-      }
-      .pix-info strong {
-        color: #075E54;
-      }
-      .comprovante-container {
-        margin-top: 15px;
-      }
-      .comprovante-preview {
-        max-width: 100%;
-        max-height: 200px;
-        border-radius: 8px;
-        margin-top: 10px;
-        border: 1px solid #ccc;
-      }
-      .success-message {
-        color: #25D366;
-        font-weight: bold;
-        margin-top: 10px;
-      }
-      .error-message {
-        color: #f44336;
-        font-weight: bold;
-        margin-top: 10px;
-      }
-      .pdf-warning {
-        background-color: #fff3cd;
-        color: #856404;
-        padding: 10px;
-        border-radius: 5px;
-        margin-top: 10px;
-        font-size: 14px;
-      }
-      .upload-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 10px;
-      }
     </style>
   </head>
   <body>
     <div class="chat-container">
       <div class="chat-header">
         <img src="perfil.webp" alt="Perfil">
-        <div class="name">Chef Larissa Campos</div>
+        <div class="name"><strong>Larissa Campos</strong></div>
       </div>
       <div class="chat-body" id="chatBody"></div>
       <div class="chat-footer">
@@ -411,6 +400,15 @@
         </button>
       </div>
     </div>
+
+    <script type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "s28w44cz1e");
+    </script>
+
     <script>
       // Configuração do PDF.js
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.worker.min.js';
@@ -424,45 +422,95 @@
       const EBOOK_COMPLETO_LINK = 'https://drive.google.com/drive/folders/1vAot8BBYUrWqPvYeCYUVMcvQxAybNTmF';
       const WHATSAPP_LARISSA = '98981507823';
       const GRUPO_WHATSAPP = 'https://chat.whatsapp.com/HgZNILSst31K2pQSXWiAAp';
+      const RECEITA_GRATIS_LINK = 'https://drive.google.com/drive/folders/10dhKX4lN2eTHxDsCWycopeeLFTyYBW5M';
+      const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzEenuDGBCHYllCaULAouB75qvW5KmhMLfbXi4Jok9BpB-waRkr9SnDe4JtTJRH4Olp/exec'; 
       
       let isWaitingResponse = false;
       let typingEl = null;
       let conversationStage = 0;
       let currentPackage = 'basico';
-      let activeAudio = null;
-      let audioEndListener = null;
       let lastOptionSelected = null;
       let shownBasicoDetails = false;
       let shownCompletoDetails = false;
-      let recordingStartTime = null;
-      let recordingTimer = null;
       let isWaitingPayment = false;
       let uploadedComprovante = null;
       let comprovanteUploaded = false;
+      let isWaitingWhatsappNumber = false;
+      let activeAudio = null;
+      let audioEndListener = null;
+      let recordingStartTime = null;
+      let recordingTimer = null;
 
-      const audioPrevia = new Audio('previa.mp3');
-      const audioGuia = new Audio('guia.mp3');
-      const audioVoice1 = new Audio('voice1.mp3');
+      // Áudios de agradecimento
+      const audioAgradecimento1 = new Audio('agradecimento1.mp3');
+      const audioAgradecimento2 = new Audio('agradecimento2.mp3');
 
-      [audioPrevia, audioGuia, audioVoice1].forEach(audio => {
-        audio.addEventListener('play', function() {
-          if (activeAudio && activeAudio !== this) {
-            activeAudio.pause();
-            const playButtons = document.querySelectorAll('.play-button');
-            playButtons.forEach(btn => btn.classList.remove('playing'));
-          }
-          activeAudio = this;
-          const playButton = document.querySelector(`audio[src="${this.src}"]`)?.parentElement.querySelector('.play-button');
-          if (playButton) playButton.classList.add('playing');
+      // Configurar os áudios
+      function setupAudios() {
+        [audioAgradecimento1, audioAgradecimento2].forEach(audio => {
+          audio.addEventListener('play', function() {
+            // Pausar qualquer áudio que esteja tocando
+            if (activeAudio && activeAudio !== this) {
+              activeAudio.pause();
+              const playButtons = document.querySelectorAll('.play-button');
+              playButtons.forEach(btn => btn.classList.remove('playing'));
+            }
+            activeAudio = this;
+            
+            // Atualizar o botão de play correspondente
+            const audioElements = document.querySelectorAll('audio');
+            for (let audioEl of audioElements) {
+              if (audioEl.src === this.src) {
+                const playButton = audioEl.parentElement.querySelector('.play-button');
+                if (playButton) playButton.classList.add('playing');
+                break;
+              }
+            }
+          });
+          
+          audio.addEventListener('ended', function() {
+            const audioElements = document.querySelectorAll('audio');
+            for (let audioEl of audioElements) {
+              if (audioEl.src === this.src) {
+                const playButton = audioEl.parentElement.querySelector('.play-button');
+                if (playButton) playButton.classList.remove('playing');
+                break;
+              }
+            }
+            if (audioEndListener) { 
+              audioEndListener(); 
+              audioEndListener = null; 
+            }
+          });
+          
+          audio.addEventListener('pause', function() {
+            const audioElements = document.querySelectorAll('audio');
+            for (let audioEl of audioElements) {
+              if (audioEl.src === this.src) {
+                const playButton = audioEl.parentElement.querySelector('.play-button');
+                if (playButton) playButton.classList.remove('playing');
+                break;
+              }
+            }
+          });
         });
-        audio.addEventListener('ended', function() {
-          const playButton = document.querySelector(`audio[src="${this.src}"]`)?.parentElement.querySelector('.play-button');
-          if (playButton) playButton.classList.remove('playing');
-          if (audioEndListener) { audioEndListener(); audioEndListener = null; }
-        });
-      });
+      }
 
-      // Web Speech API para gravação de voz e transcrição
+      // Função para alternar play/pause do áudio
+      function toggleAudio(button) {
+        const audio = button.parentElement.querySelector('audio');
+        if (!audio) return;
+        
+        if (audio.paused) {
+          audio.play().catch(e => console.log("Erro ao reproduzir áudio:", e));
+          button.classList.add('playing');
+        } else {
+          audio.pause();
+          button.classList.remove('playing');
+        }
+      }
+
+      // Web Speech API para gravação de voz
       let recognition;
       const actionButton = document.getElementById('actionButton');
       const actionIcon = document.getElementById('actionIcon');
@@ -580,274 +628,136 @@ Regras de botões:
 - Se fora do escopo, responda: "Esse assunto foge um pouco do que eu costumo compartilhar por aqui, mas posso te ajudar com receitas incríveis sem glúten e sem lactose! 💙"
 
 Contexto: ${lastOptionSelected ? 'última seleção: ' + lastOptionSelected : 'início'}.
-Cliente: ${userMessage}
-Larissa:`;
+Cliente: ${userMessage}`;
         return prompt;
       }
 
       window.onload = async () => {
-        // Fluxo inicial com as mensagens pré-definidas intactas
-        await simulateTyping("<strong>Olá, tudo bem? 🌟</strong><br><br>Eu sou a <strong>Larissa Campos</strong>, nutricionista apaixonada por receitas saudáveis.<br>Fico feliz que você se interessou pelas minhas receitinhas!");
-        await simulateTyping("🍞 Você está prestes a aprender a fazer pães e delícias sem glúten e sem lactose<br>fofinhos, saborosos e fáceis de preparar!<br><br>✨ <strong>O que você vai receber:</strong><br>- 📘 50 receitas exclusivas<br>- ❌ Sem glúten e sem lactose<br>- 🛒 Ingredientes fáceis de encontrar<br>- 🤝 Suporte direto comigo pelo WhatsApp<br>- 🔒 Acesso vitalício<br><br>E o melhor...<br>🔴 <strong>Tudo isso por apenas R$ 9,90!</strong>");
-        // Mostrar indicador de gravação do bot como mensagem
-        const recordingEl = document.createElement("div");
-        recordingEl.className = "bot-recording-indicator";
-        recordingEl.innerHTML = `<img src="gravabot.webp" class="bot-recording-img">`;
-        document.getElementById("chatBody").appendChild(recordingEl);
-        document.getElementById("chatBody").scrollTop = document.getElementById("chatBody").scrollHeight;
-        await new Promise(r => setTimeout(r, 3000));
-        recordingEl.remove();
-        await showAudioMessage(audioVoice1, false);
-        await waitForAudioToFinish(audioVoice1);
+        setupAudios(); // Configurar os listeners dos áudios
+        
+        // Fluxo inicial com as novas mensagens
+        await simulateTyping("Oiê! Eu sou a <strong>Larissa Campos</strong>, nutricionista apaixonada por receitas saudáveis sem glúten e sem lactose. 💛🥰");
+        await simulateTyping("😱 Sofre com glúten ou lactose e nada dá certo na cozinha? 🍞 Vem comigo! Você vai aprender a fazer pães incríveis, com ingredientes simples — e muito sabor!");
+        await simulateTyping("👇 Escolhe uma opção:");
         appendMessage("bot", `
-          <p>Qual você quer? 👇🏻☺️</p>
           <div class="option-buttons">
-            <button class="option-button" onclick="handleOptionClick('Pacote Completo')">Pacote Completo 🥹</button>
-            <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">As 50 Receitas ❤️</button>
+            <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+            <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+            <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
           </div>`);
       };
 
-      function waitForAudioToFinish(audio) {
-        return new Promise(resolve => {
-          if (audio.duration > 0 && !audio.paused) {
-            audioEndListener = resolve;
-          } else {
-            setTimeout(resolve, 2000);
-          }
-        });
-      }
-
       async function handleOptionClick(option) {
-        // Track option selection in Clarity
-        if(window.clarity) {
-          clarity("event", "botao_opcao_clicado", {
-            opcao: option,
-            pacote: currentPackage
-          });
-        }
-        
         appendMessage("user", option);
         lastOptionSelected = option;
-        currentPackage = option.toLowerCase().includes('completo') ? 'completo' : 'basico';
-        // indicador de gravação bot como mensagem
-        const recEl = document.createElement("div");
-        recEl.className = "bot-recording-indicator";
-        recEl.innerHTML = `<img src="gravabot.webp" class="bot-recording-img">`;
-        document.getElementById("chatBody").appendChild(recEl);
-        document.getElementById("chatBody").scrollTop = document.getElementById("chatBody").scrollHeight;
-        await new Promise(r => setTimeout(r, Math.random() * 2000 + 2000));
-        recEl.remove();
-        if (currentPackage === 'completo') {
-          shownCompletoDetails = true;
-          await showAudioMessage(audioGuia, false);
-          await waitForAudioToFinish(audioGuia);
-          await showPackageDetailsAndAsk();
-        } else {
-          shownBasicoDetails = true;
-          await showAudioMessage(audioPrevia, false);
-          await waitForAudioToFinish(audioPrevia);
-          await showPreviewAndAsk();
-        }
-      }
-
-      async function showAudioMessage(audio, autoplay = false) {
-        // Track audio interaction
-        if(window.clarity) {
-          clarity("event", "audio_interacao", {
-            tipo: "exibicao",
-            audio: audio.src.split('/').pop()
-          });
-        }
         
-        const audioMessageHTML = `
-          <div class="audio-message">
-            <div class="play-button" onclick="toggleAudio(this)"></div>
-            <div class="audio-info">
-              <div class="audio-wave">
-                ${Array.from({length: 50}, () =>
-                  `<span style="height:${Math.random() * 20 + 5}px"></span>`
-                ).join('')}
-              </div>
-            </div>
-            <audio src="${audio.src}" style="display:none"></audio>
-          </div>
-        `;
-        appendMessage("bot", audioMessageHTML);
-        if (autoplay) {
-          const audioElement = document.querySelector(`audio[src="${audio.src}"]`);
-          if (audioElement) {
-            audioElement.play().catch(e => console.log("Auto-play não permitido:", e));
-          }
+        if (option === 'As 50 Receitas') {
+          currentPackage = 'basico';
+          await show50ReceitasFlow();
+        } 
+        else if (option === 'Me mostra o Pacote Completo') {
+          currentPackage = 'completo';
+          await showPacoteCompletoFlow();
+        }
+        else if (option === 'Grupo Grátis no WhatsApp') {
+          await simulateTyping("Me manda seu número de WhatsApp com DDD (exemplo: 11999999999), que eu vou te colocar no nosso Grupo Free do WhasApp com receitinhas, dicas e conteúdos exclusivos. Eles são animadinhos! 🤭👇🏻");
+          appendMessage("bot", `<img src="grupo.webp" alt="Grupo WhatsApp" class="preview-image">`);
+          await simulateTyping("Se preferir não passar agora, tá tudo bem! Você pode continuar por aqui mesmo escolhendo uma das opções abaixo.");
+          
+          appendMessage("bot", `
+            <div class="option-buttons">
+              <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+              <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+            </div>`);
+          
+          isWaitingWhatsappNumber = true;
         }
       }
 
-      function toggleAudio(button) {
-        const audio = button.parentElement.querySelector('audio');
-        if (audio.paused) {
-          // Track audio play
-          if(window.clarity) {
-            clarity("event", "audio_interacao", {
-              tipo: "play",
-              audio: audio.src.split('/').pop()
-            });
-          }
-          audio.play();
-          button.classList.add('playing');
-          audioEndListener = () => {
-            showTypingIndicator();
-            setTimeout(hideTypingIndicator, 1500);
-          };
-        } else {
-          // Track audio pause
-          if(window.clarity) {
-            clarity("event", "audio_interacao", {
-              tipo: "pause",
-              audio: audio.src.split('/').pop()
-            });
-          }
-          audio.pause();
-          button.classList.remove('playing');
-          audioEndListener = null;
-        }
-      }
-
-      async function showPackageDetailsAndAsk() {
-        conversationStage = 1;
-        const detailsHTML = `
-          <div style="margin-top: 10px;">
-            <p><strong>📚 Pacote Completo – R$ 19,90 (promoção)</strong></p>
-            <p>✅ Guia Pães Sem Glúten – com 125 receitas testadas</p>
-            <p>✅ Acesso vitalício e direito a todas as atualizações futuras</p>
-            <p>✅ Comunidade exclusiva no WhatsApp</p>
-            <p>✅ Contato direto comigo via WhatsApp</p>
-            <p><strong>🎁 6 E-books Extras:</strong></p>
-            <p>🍫 Doces sem Açúcar</p>
-            <p>🍰 Bolos Sem Glúten</p>
-            <p>🎄 Panetone & Chocotone</p>
-            <p>🥚 Substituições de Ingredientes</p>
-            <p>🥖 Pães Trançados</p>
-            <p>🧪 Fermentação Natural</p>
-            <p><br>🔔 <strong>Tudo isso por apenas R$ 19,90</strong></p>
-          </div>
-        `;
-        await simulateTyping(detailsHTML);
-        await simulateTyping("O que achou? Quer garantir seu acesso?");
+      async function show50ReceitasFlow() {
+        await simulateTyping("🥰 Que bom que você escolheu começar com as 50 Receitas Saudáveis!");
+        await simulateTyping("Esse e-book está cheio de receitas sem glúten e sem lactose — fáceis e deliciosas!");
+        await simulateTyping("<strong>✨ O que você vai receber:</strong><br><br>📘 50 receitas exclusivas<br>❌ Sem glúten e sem lactose<br>🛒 Ingredientes fáceis de encontrar<br>🤝 Suporte direto comigo pelo WhatsApp<br>🔒 Acesso vitalício<br><br><strong>🔴 Tudo isso por apenas R$ 9,90!</strong>");
+        await simulateTyping("👇 É só clicar no botão pra garantir o seu!");
         appendMessage("bot", `
           <div class="option-buttons">
-            <button class="option-button" onclick="handleBuyInterest('Quero o Pacote Completo')">Quero o Completo 🌟</button>
-            <button class="option-button" onclick="handleBuyInterest('Ver Pacote Básico')">Ver Pacote Básico</button>
+            <button class="option-button" onclick="handleBuyInterest('Garantir as 50 Receitas')">✅ Garantir as 50 Receitas</button>
+            <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+            <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
           </div>`);
       }
 
-      async function showPreviewAndAsk() {
-        conversationStage = 1;
-        const imagesHTML = `
-          <div style="margin-top: 10px;">
-            <img src="receita1.webp" alt="Receita 1" class="preview-image">
-            <img src="receita2.webp" alt="Receita 2" class="preview-image">
-            <p>😍 Impressionante, né? São 50 receitas incríveis!</p>
-            <p>🔴 Investimento: <strong>R$ 9,90</strong> (valor promocional)</p>
-          </div>
-        `;
-        await simulateTyping(imagesHTML);
-        await simulateTyping("O que você achou? Posso te mostrar como adquirir?");
+      async function showPacoteCompletoFlow() {
+        await simulateTyping("🥰 Claro que sim 🥰<br>Dá uma olhadinha no que te espera:");
+        await simulateTyping("<strong>📚 Pacote Completo – R$ 19,90 (promoção)</strong><br><br>✅ Guia Pães Sem Glúten – com 125 receitas testadas<br>✅ Acesso vitalício e direito a todas as atualizações futuras<br>✅ Comunidade exclusiva no WhatsApp<br>✅ Contato direto comigo via WhatsApp");
+        await simulateTyping("<strong>🎁 6 E-books Extras:</strong><br><br>🍫 Doces sem Açúcar<br><br>🍰 Bolos Sem Glúten<br><br>🎄 Panetone & Chocotone<br><br>🥚 Substituições de Ingredientes<br><br>🥖 Pães Trançados<br><br>🧪 Fermentação Natural");
         appendMessage("bot", `
           <div class="option-buttons">
-            <button class="option-button" onclick="handleBuyInterest('Sim, quero comprar')">Sim, quero comprar</button>
-            <button class="option-button" onclick="handleBuyInterest('Mais informações')">Mais informações</button>
+            <button class="option-button" onclick="handleBuyInterest('Quero o Pacote Completo')">🎀 Quero o Pacote Completo</button>
+            <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+            <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
           </div>`);
       }
 
-      const personalizedMessages = [
-        "Você fez uma escolha maravilhosa! Assim que você efetuar o pagamento, seu E-Book estará disponível para download.",
-        "Excelente decisão! Prepare-se para receber receitas incríveis e saudáveis.",
-        "Perfeito! Seu investimento em receitas saudáveis vai valer cada centavo."
-      ];
-
-      function getRandomPersonalized() {
-        return personalizedMessages[Math.floor(Math.random() * personalizedMessages.length)];
-      }
+      const personalizedMessages = {
+        basico: [
+          "🥰 Que escolha maravilhosa! As 50 receitas vão transformar sua cozinha!",
+          "Você pode pagar via Pix e enviar o comprovante aqui mesmo 💚",
+          "Assim que confirmarmos seu pagamento, seu e-book estará disponível para download. ☺️"
+        ],
+        completo: [
+          "🥰 Excelente decisão! O pacote completo vai revolucionar sua alimentação!",
+          "Você pode pagar via Pix e enviar o comprovante aqui mesmo 💚",
+          "Assim que confirmarmos seu pagamento, seu acesso será liberado imediatamente. ☺️"
+        ]
+      };
 
       async function handleBuyInterest(option) {
-        // Track buy interest in Clarity
-        if(window.clarity) {
-          clarity("event", "interesse_compra", {
-            opcao: option,
-            pacote: currentPackage
-          });
-        }
-        
         appendMessage("user", option);
         const lower = option.toLowerCase();
-        if (lower.includes("ver pacote básico")) {
+        
+        if (lower.includes("garantir as 50 receitas") || lower.includes("quero o básico") || lower.includes("fico com o básico") || 
+            lower.includes("quero comprar as 50") || lower.includes("vou comprar as 50")) {
           currentPackage = 'basico';
-          shownBasicoDetails = true;
-          await simulateTyping("Claro! Vou mostrar mais sobre o Ebook Básico.");
-          // bot gravação indicador como mensagem
-          const recEl = document.createElement("div");
-          recEl.className = "bot-recording-indicator";
-          recEl.innerHTML = `<img src="gravabot.webp" class="bot-recording-img">`;
-          document.getElementById("chatBody").appendChild(recEl);
-          document.getElementById("chatBody").scrollTop = document.getElementById("chatBody").scrollHeight;
-          await waitForAudioToFinish(audioPrevia);
-          recEl.remove();
-          await showAudioMessage(audioPrevia, false);
-          await waitForAudioToFinish(audioPrevia);
-          const imagesHTML = `
-            <div style="margin-top: 10px;">
-              <img src="receita1.webp" alt="Receita 1" class="preview-image">
-              <img src="receita2.webp" alt="Receita 2" class="preview-image">
-              <p>😍 Impressionante, né? São 50 receitas incríveis!</p>
-              <p>🔴 Investimento: <strong>R$ 9,90</strong> (valor promocional)</p>
-            </div>
-          `;
-          await simulateTyping(imagesHTML);
-          await simulateTyping("🥰 Que bom que você escolheu começar com as 50 Receitas Saudáveis! Esse E-Book está recheado de delícias sem glúten e sem lactose, com ingredientes fáceis e resultados incríveis.<br>Clique no botão abaixo para finalizar.");
-          await showBuyOptions();
-        } else if (lower.includes("mais informações")) {
-          if (currentPackage === 'completo') {
-            await simulateTyping("Claro! O Pacote Completo inclui 125 receitas de pães sem glúten, acesso vitalício a todas as atualizações, comunidade exclusiva no WhatsApp, contato direto comigo e 6 e-books extras com técnicas avançadas. Por R$ 19,90, clique no botão abaixo para finalizar.");
-          } else {
-            // Nova mensagem para "Mais informações" no e-book de 50 receitas
-            await simulateTyping("Esse e-book traz 50 receitas práticas, saudáveis e 100% sem glúten e sem lactose — perfeitas pro dia a dia de quem busca leveza e sabor! 🥰");
-            await simulateTyping("Alguns dos pães que você vai encontrar são:<br>✨ Pão Rústico de Arroz e Linhaça<br>✨ Pão de Milho de Frigideira<br>✨ Pão de Batata na Airfryer<br>✨ Pão Croissant Macio<br>✨ Pão de Aveia com Sementes<br>✨ Pão de Amendoim com Coco<br>✨ Pão de Batata Doce com Gergelim<br>✨ Pão de Mandioca com Cebola e Salsa<br>✨ Pão de Quinoa e Gergelim");
-            await simulateTyping("E muito mais! São receitas fáceis, gostosas e com aquele toque saudável que faz a diferença. 😋💚");
-            await simulateTyping("🥰 Que bom que você escolheu começar com as 50 Receitas Saudáveis! Esse E-Book está recheado de delícias sem glúten e sem lactose, com ingredientes fáceis e resultados incríveis.<br>Clique no botão abaixo para finalizar.");
-          }
-          await showBuyOptions();
-        } else if (lower.includes("quero o pacote completo") || lower.includes("quero o completo")) {
+          // Mostrar as mensagens personalizadas
+          await simulateTyping(personalizedMessages.basico[0]);
+          await simulateTyping(personalizedMessages.basico[1]);
+          await simulateTyping(personalizedMessages.basico[2]);
+          await showPaymentOptions();
+        } 
+        else if (lower.includes("quero o pacote completo") || lower.includes("quero o completo") || 
+                 lower.includes("quero comprar o pacote completo") || lower.includes("vou comprar o pacote completo")) {
           currentPackage = 'completo';
-          await simulateTyping(getRandomPersonalized());
-          await simulateTyping("O Pacote Completo inclui 125 receitas de pães sem glúten, acesso vitalício, comunidade exclusiva no WhatsApp, contato direto comigo e 6 e-books extras. Por R$ 19,90, clique no botão abaixo para finalizar.");
-          await showBuyOptions();
-        } else if (lower.includes("50 receitas") || lower.includes("sim, quero comprar") || lower.includes("quero as 50")) {
+          // Mostrar as mensagens personalizadas
+          await simulateTyping(personalizedMessages.completo[0]);
+          await simulateTyping(personalizedMessages.completo[1]);
+          await simulateTyping(personalizedMessages.completo[2]);
+          await showPaymentOptions();
+        }
+        else if (lower.includes("ver pacote básico") || lower.includes("tenho dúvidas") || lower.includes("saber mais sobre as 50 receitas") || 
+                 lower.includes("me explica sobre as 50 receitas") || lower.includes("detalhes das 50 receitas")) {
           currentPackage = 'basico';
-          await simulateTyping(getRandomPersonalized());
-          await simulateTyping("🥰 Que bom que você escolheu começar com as 50 Receitas Saudáveis! Esse E-Book está recheado de delícias sem glúten e sem lactose, com ingredientes fáceis e resultados incríveis.<br>Clique no botão abaixo para finalizar.");
-          await showBuyOptions();
-        } else {
-          await simulateTyping(getRandomPersonalized());
-          await showBuyOptions();
+          await show50ReceitasFlow();
+        }
+        else if (lower.includes("ver pacote completo") || lower.includes("detalhes completo") || lower.includes("saber mais sobre o pacote completo") || 
+                 lower.includes("me explica sobre o pacote completo") || lower.includes("detalhes do pacote completo")) {
+          currentPackage = 'completo';
+          await showPacoteCompletoFlow();
+        }
+        else if (lower.includes("grupo free") || lower.includes("saber mais sobre o grupo") || lower.includes("detalhes do grupo")) {
+          await handleOptionClick('Grupo Grátis no WhatsApp');
+        }
+        else {
+          // Se não reconhecer, usa a Gemini para responder
+          await handleCustomMessage(option);
         }
       }
 
-      async function handlePurchaseClick(packageType) {
-        // Track purchase intent in Clarity
-        if(window.clarity) {
-          clarity("event", "intencao_compra", {
-            pacote: packageType,
-            valor: packageType === 'completo' ? '19.90' : '9.90'
-          });
-        }
-        
-        appendMessage("user", packageType === 'completo' ? 'Quero o Pacote Completo' : 'Quero as 50 Receitas');
+      async function showPaymentOptions() {
         isWaitingPayment = true;
-        currentPackage = packageType;
         comprovanteUploaded = false;
         
-        const price = packageType === 'completo' ? '19,90' : '9,90';
-        
-        await simulateTyping("<strong>Ótima escolha! Você pode pagar via Pix e enviar o comprovante aqui mesmo 💚</strong>");
+        const price = currentPackage === 'completo' ? '19,90' : '9,90';
         
         const pixInfoHTML = `
           <div class="pix-info">
@@ -894,14 +804,6 @@ Larissa:`;
       }
 
       async function handleComprovanteUpload(event, type) {
-        // Track receipt upload in Clarity
-        if(window.clarity) {
-          clarity("event", "comprovante_enviado", {
-            tipo: type,
-            pacote: currentPackage
-          });
-        }
-        
         const file = event.target.files[0];
         if (!file) return;
         
@@ -1030,14 +932,7 @@ Larissa:`;
                                text.includes(`R$${expectedAmount}`);
         
         if (hasReceiverName && hasCorrectAmount) {
-          // Track successful payment in Clarity
-          if(window.clarity) {
-            clarity("event", "pagamento_confirmado", {
-              pacote: currentPackage,
-              valor: expectedAmount
-            });
-          }
-          
+          // Mostrar mensagem de sucesso
           const successHTML = `
             <div class="success-message">
               ✅ Pagamento confirmado! Obrigada pela compra!
@@ -1049,16 +944,41 @@ Larissa:`;
             <p>Se precisar de algo, é só chamar! 😊</p>
           `;
           appendMessage("bot", successHTML);
+          
+          // Adicionar o áudio de agradecimento com o novo formato e delay
+          const recordingEl = document.createElement("div");
+          recordingEl.className = "bot-recording-indicator";
+          recordingEl.innerHTML = `<img src="gravabot.webp" class="bot-recording-img">`;
+          document.getElementById("chatBody").appendChild(recordingEl);
+          document.getElementById("chatBody").scrollTop = document.getElementById("chatBody").scrollHeight;
+          
+          // Delay de 3 segundos simulando gravação
+          await new Promise(r => setTimeout(r, 3000));
+          recordingEl.remove();
+          
+          // Mostrar o áudio de agradecimento (sem reprodução automática)
+          showAudioMessage(currentPackage === 'completo' ? audioAgradecimento2 : audioAgradecimento1);
         } else {
-          // Track payment error in Clarity
-          if(window.clarity) {
-            clarity("event", "erro_pagamento", {
-              pacote: currentPackage,
-              motivo: "nao_verificado"
-            });
-          }
           showComprovanteError();
         }
+      }
+
+      function showAudioMessage(audio) {
+        const audioHTML = `
+          <div class="audio-message">
+            <div class="play-button" onclick="toggleAudio(this)"></div>
+            <div class="audio-info">
+              <div class="audio-wave">
+                ${Array.from({length: 50}, () =>
+                  `<span style="height:${Math.random() * 20 + 5}px"></span>`
+                ).join('')}
+              </div>
+            </div>
+            <audio src="${audio.src}" style="display:none"></audio>
+          </div>
+        `;
+        
+        appendMessage("bot", audioHTML);
       }
 
       function showComprovanteError() {
@@ -1111,34 +1031,6 @@ Larissa:`;
         return phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
       }
 
-      async function showBuyOptions() {
-        conversationStage = 2;
-        if (currentPackage === 'basico') {
-          appendMessage("bot", `
-            <div class="buy-options">
-              <button class="buy-button" onclick="handlePurchaseClick('basico')">
-                GARANTIR O EBOOK - 50 RECEITAS
-              </button>
-            </div>
-          `);
-          await simulateTyping("Mas se quiser uma experiência mais completa…<br><br>👇 Você ainda pode aproveitar:");
-          appendMessage("bot", `
-            <div class="buy-options">
-              <button class="buy-button" onclick="handlePurchaseClick('completo')">
-                GARANTIR O EBOOK - COMPLETO
-              </button>
-            </div>`);
-        } else {
-          appendMessage("bot", `
-            <div class="buy-options">
-              <button class="buy-button" onclick="handlePurchaseClick('completo')">
-                GARANTIR O EBOOK - COMPLETO
-              </button>
-            </div>
-          `);
-        }
-      }
-
       function handleKeyPress(event) {
         if (event.key === 'Enter' && !isWaitingResponse) {
           sendMessage();
@@ -1150,14 +1042,6 @@ Larissa:`;
         const text = userInput.value.trim();
         if (!text) return;
         
-        // Track user message in Clarity
-        if(window.clarity) {
-          clarity("event", "mensagem_usuario", {
-            texto: text.length > 100 ? text.substring(0, 100) + "..." : text,
-            pacote: currentPackage
-          });
-        }
-        
         appendMessage("user", text);
         userInput.value = "";
         updateActionIcon();
@@ -1166,6 +1050,48 @@ Larissa:`;
 
         const lower = text.toLowerCase();
         const normalized = lower.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+        // Verificar se está esperando número do WhatsApp
+        if (isWaitingWhatsappNumber) {
+          hideTypingIndicator();
+          isWaitingWhatsappNumber = false;
+          
+          // Validar número de WhatsApp
+          const whatsappNumber = text.replace(/\D/g, ''); // Remove tudo que não for dígito
+          
+          if (whatsappNumber.length === 11 && 
+              whatsappNumber.charAt(2) === '9' && 
+              /^\d+$/.test(whatsappNumber)) {
+            
+            // Número válido - salvar no Google Sheets via Apps Script
+            try {
+              if (APP_SCRIPT_URL) {
+                await fetch(`${APP_SCRIPT_URL}?whatsapp=${encodeURIComponent(`https://wa.me/${whatsappNumber}`)}`, {
+                  method: 'GET'
+                });
+              }
+              
+              await simulateTyping("Perfeito! Assim que possível, te adiciono no grupo, tá? 💚✨");
+              
+              appendMessage("bot", `
+                <div class="option-buttons">
+                  <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                  <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                </div>`);
+            } catch (error) {
+              console.error("Erro ao salvar número:", error);
+              await simulateTyping("O número foi recebido, mas tive um problema técnico para registrar. Pode me enviar de novo?");
+              isWaitingWhatsappNumber = true;
+            }
+          } else {
+            // Número inválido
+            await simulateTyping("Ops! O número tá com algum errinho... Me envia ele de novo com DDD e tudo junto, assim: 11999999999 💬");
+            isWaitingWhatsappNumber = true;
+          }
+          
+          isWaitingResponse = false;
+          return;
+        }
 
         // Perguntas sobre Larissa ou sobre o bot
         if (normalized.includes('quem e larissa') || normalized.includes('quem é larissa') ||
@@ -1185,18 +1111,22 @@ Larissa:`;
           await simulateTyping("Siga-me:\nhttps://www.instagram.com/receitinhasdalari\nhttps://www.facebook.com/share/1ErC8vLffa/");
           if (currentPackage === 'completo') {
             appendMessage("bot", `
-              <div class="buy-options">
-                <button class="buy-button" onclick="handlePurchaseClick('completo')">
-                  GARANTIR O EBOOK - COMPLETO
-                </button>
+              <div class="option-buttons">
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
               </div>`);
           } else if (currentPackage === 'basico') {
-            await showBuyOptions();
+            appendMessage("bot", `
+              <div class="option-buttons">
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
+              </div>`);
           } else {
             appendMessage("bot", `
               <div class="option-buttons">
-                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">As 50 Receitas ❤️</button>
-                <button class="option-button" onclick="handleOptionClick('Pacote Completo')">Pacote Completo 🥹</button>
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
               </div>`);
           }
           isWaitingResponse = false;
@@ -1222,21 +1152,25 @@ Larissa:`;
             normalized.includes('sem glúten') || normalized.includes('sem gluten') ||
             normalized.includes('sem lactose')) {
           hideTypingIndicator();
-          await simulateTyping("Todas as receitas são 100% sem glúten e sem lactose, adequadas para intolerantes.");
+          await simulateTyping("Todas as receitas são 100% sem glúten e sem lactose — adequadas para intolerantes.");
           if (currentPackage === 'completo') {
             appendMessage("bot", `
-              <div class="buy-options">
-                <button class="buy-button" onclick="handlePurchaseClick('completo')">
-                  GARANTIR O EBOOK - COMPLETO
-                </button>
+              <div class="option-buttons">
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
               </div>`);
           } else if (currentPackage === 'basico') {
-            await showBuyOptions();
+            appendMessage("bot", `
+              <div class="option-buttons">
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
+              </div>`);
           } else {
             appendMessage("bot", `
               <div class="option-buttons">
-                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">As 50 Receitas ❤️</button>
-                <button class="option-button" onclick="handleOptionClick('Pacote Completo')">Pacote Completo 🥹</button>
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
               </div>`);
           }
           isWaitingResponse = false;
@@ -1249,24 +1183,28 @@ Larissa:`;
             normalized.includes('confirmar pagamento') || normalized.includes('recebimento'))) {
           hideTypingIndicator();
           if (currentPackage === 'completo') {
-            await simulateTyping("Assim que seu pagamento for confirmado, te envio <strong>tudo aqui no chat</strong> mesmo! Você receberá:<br>✔️ O link para baixar o <strong>Guia Completo com 125 Receitas + 6 Bônus</strong><br>✔️ Convite para o <strong>grupo exclusivo</strong> no WhatsApp<br>✔️ Meu contato direto para suporte<br><br>Fica tranquilo(a) que eu te guio passo a passo!");
+            await simulateTyping("Assim que seu pagamento for confirmado, te envio <strong>tudo aqui no chat</strong> mesmo! Você receberá:<br>✔️ O link para baixar o <strong>Guide Completo com 125 Receitas + 6 Bônus</strong><br>✔️ Convite para o <strong>grupo exclusivo</strong> no WhatsApp<br>✔️ Meu contato direto para suporte<br><br>Fica tranquilo(a) que eu te guio passo a passo!");
           } else {
             await simulateTyping("Assim que seu pagamento for confirmado, vou te enviar <strong>tudo direto aqui no chat</strong>! Você receberá:<br>✔️ O link para baixar seu <strong>E-book com 50 Receitas</strong> (em PDF)<br>✔️ Meu WhatsApp pessoal para tirar dúvidas<br><br>É super rápido! Se o link não aparecer em 2 minutinhos, me avisa que eu resolvo. 💛");
           }
           if (currentPackage === 'completo') {
             appendMessage("bot", `
-              <div class="buy-options">
-                <button class="buy-button" onclick="handlePurchaseClick('completo')">
-                  GARANTIR O EBOOK - COMPLETO
-                </button>
+              <div class="option-buttons">
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
               </div>`);
           } else if (currentPackage === 'basico') {
-            await showBuyOptions();
+            appendMessage("bot", `
+              <div class="option-buttons">
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
+              </div>`);
           } else {
             appendMessage("bot", `
               <div class="option-buttons">
-                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">As 50 Receitas ❤️</button>
-                <button class="option-button" onclick="handleOptionClick('Pacote Completo')">Pacote Completo 🥹</button>
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
               </div>`);
           }
           isWaitingResponse = false;
@@ -1276,7 +1214,26 @@ Larissa:`;
         if (normalized.includes('diferenca') || normalized.includes('diferença') || normalized.includes('comparar') || normalized.includes('oq muda') || normalized.includes('oque muda') || normalized.includes('o que muda')) {
           hideTypingIndicator();
           await simulateTyping("Básico: 50 receitas sem glúten e lactose, acesso vitalício, suporte. R$ 9,90. Completo: 125 receitas, comunidade, contato direto, atualizações e 6 bônus. R$ 19,90.");
-          await showBuyOptions();
+          if (currentPackage === 'completo') {
+            appendMessage("bot", `
+              <div class="option-buttons">
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
+              </div>`);
+          } else if (currentPackage === 'basico') {
+            appendMessage("bot", `
+              <div class="option-buttons">
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
+              </div>`);
+          } else {
+            appendMessage("bot", `
+              <div class="option-buttons">
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
+              </div>`);
+          }
           isWaitingResponse = false;
           return;
         }
@@ -1285,10 +1242,9 @@ Larissa:`;
           hideTypingIndicator();
           await simulateTyping("No Pacote Completo você tem tanto a comunidade exclusiva quanto contato direto comigo via WhatsApp. Para participar, clique no botão.");
           appendMessage("bot", `
-            <div class="buy-options">
-              <button class="buy-button" onclick="handlePurchaseClick('completo')">
-                GARANTIR O EBOOK - COMPLETO
-              </button>
+            <div class="option-buttons">
+              <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+              <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
             </div>`);
           isWaitingResponse = false;
           return;
@@ -1298,12 +1254,18 @@ Larissa:`;
           hideTypingIndicator();
           await simulateTyping("Você pode acessar tudo pelo celular, tablet ou computador.");
           if (currentPackage) {
-            await showBuyOptions();
+            appendMessage("bot", `
+              <div class="option-buttons">
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
+              </div>`);
           } else {
             appendMessage("bot", `
               <div class="option-buttons">
-                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">As 50 Receitas ❤️</button>
-                <button class="option-button" onclick="handleOptionClick('Pacote Completo')">Pacote Completo 🥹</button>
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
               </div>`);
           }
           isWaitingResponse = false;
@@ -1314,12 +1276,18 @@ Larissa:`;
           hideTypingIndicator();
           await simulateTyping("Os arquivos são PDF e podem ser baixados e impressos.");
           if (currentPackage) {
-            await showBuyOptions();
+            appendMessage("bot", `
+              <div class="option-buttons">
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
+              </div>`);
           } else {
             appendMessage("bot", `
               <div class="option-buttons">
-                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">As 50 Receitas ❤️</button>
-                <button class="option-button" onclick="handleOptionClick('Pacote Completo')">Pacote Completo 🥹</button>
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
               </div>`);
           }
           isWaitingResponse = false;
@@ -1334,12 +1302,18 @@ Larissa:`;
             await simulateTyping("Aceito apenas PIX à vista. É rápido, seguro e você pode pagar direto pelo seu app bancário.");
           }
           if (currentPackage) {
-            await showBuyOptions();
+            appendMessage("bot", `
+              <div class="option-buttons">
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
+              </div>`);
           } else {
             appendMessage("bot", `
               <div class="option-buttons">
-                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">As 50 Receitas ❤️</button>
-                <button class="option-button" onclick="handleOptionClick('Pacote Completo')">Pacote Completo 🥹</button>
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
               </div>`);
           }
           isWaitingResponse = false;
@@ -1350,10 +1324,9 @@ Larissa:`;
           hideTypingIndicator();
           await simulateTyping("São 6 bônus: doces sem açúcar, bolos sem glúten, panetones & chocotones, fermentação natural, substituições e pães trançados.");
           appendMessage("bot", `
-            <div class="buy-options">
-              <button class="buy-button" onclick="handlePurchaseClick('completo')">
-                GARANTIR O EBOOK - COMPLETO
-              </button>
+            <div class="option-buttons">
+              <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+              <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
             </div>`);
           isWaitingResponse = false;
           return;
@@ -1364,13 +1337,16 @@ Larissa:`;
           await simulateTyping("Suporte via WhatsApp: no Básico falo diretamente com você; no Completo, além do contato direto, você também tem acesso à comunidade exclusiva.");
           if (currentPackage === 'completo') {
             appendMessage("bot", `
-              <div class="buy-options">
-                <button class="buy-button" onclick="handlePurchaseClick('completo')">
-                  GARANTIR O EBOOK - COMPLETO
-                </button>
+              <div class="option-buttons">
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
               </div>`);
           } else {
-            await showBuyOptions();
+            appendMessage("bot", `
+              <div class="option-buttons">
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
+              </div>`);
           }
           isWaitingResponse = false;
           return;
@@ -1379,33 +1355,14 @@ Larissa:`;
         if ((normalized.includes('conteudo') || normalized.includes('o que tem') || normalized.includes('quais') || normalized.includes('oq vem') || normalized.includes('oque vem') || normalized.includes('oque tem')) &&
             normalized.includes('pacote completo')) {
           hideTypingIndicator();
-          if (!shownCompletoDetails) {
-            shownCompletoDetails = true;
-            await simulateTyping("O Pacote Completo inclui Guia Pães Sem Glúten com 125 receitas, acesso vitalício com todas as atualizações, comunidade exclusiva no WhatsApp, contato direto comigo e 6 e-books extras. Tudo por R$ 19,90.");
-          } else {
-            await simulateTyping("Pacote Completo: 125 receitas sem glúten + comunidade + contato direto + 6 bônus + acesso vitalício. R$ 19,90.");
-          }
-          currentPackage = 'completo';
-          appendMessage("bot", `
-            <div class="buy-options">
-              <button class="buy-button" onclick="handlePurchaseClick('completo')">
-                GARANTIR O EBOOK - COMPLETO
-              </button>
-            </div>`);
+          await showPacoteCompletoFlow();
           isWaitingResponse = false;
           return;
         }
         if ((normalized.includes('conteudo') || normalized.includes('o que tem') || normalized.includes('quais') || normalized.includes('oq vem') || normalized.includes('oque vem') || normalized.includes('oque tem')) &&
             (normalized.includes('50 receitas') || normalized.includes('ebook basico') || normalized.includes('basico'))) {
           hideTypingIndicator();
-          if (!shownBasicoDetails) {
-            shownBasicoDetails = true;
-            await simulateTyping("O Ebook Básico oferece 50 receitas saborosas, sem glúten e sem lactose, ingredientes de fácil acesso, suporte via WhatsApp e acesso vitalício. Por apenas R$ 9,90.");
-          } else {
-            await simulateTyping("Ebook Básico: 50 receitas sem glúten e sem lactose, suporte e acesso vitalício. R$ 9,90.");
-          }
-          currentPackage = 'basico';
-          await showBuyOptions();
+          await show50ReceitasFlow();
           isWaitingResponse = false;
           return;
         }
@@ -1421,27 +1378,31 @@ Larissa:`;
             <div style="margin-top: 10px;">
               <img src="pao1.webp" alt="Pão de Milho de Frigideira" class="preview-image">
               <img src="pao2.webp" alt="Pão de Batata na Airfryer" class="preview-image">
-              <img src="pao3.webp" alt="Pão Croissant Macio" class="preview-image">
-              <img src="pao4.webp" alt="Pão de Aveia com Sementes" class="preview-image">
-              <img src="pao5.webp" alt="Pão de Amendoim com Coco" class="preview-image">
+              <p>Olha só o que os nossos alunos estão dizendo…</p>
+              <img src="depoimento.webp" alt="Depoimentos" class="testimonial-image">
+              <p>Você pode confiar, esse conteúdo já transformou a rotina de muita gente.</p>
             </div>
           `;
           appendMessage("bot", imagesHTML);
           
           if (currentPackage === 'completo') {
             appendMessage("bot", `
-              <div class="buy-options">
-                <button class="buy-button" onclick="handlePurchaseClick('completo')">
-                  GARANTIR O EBOOK - COMPLETO
-                </button>
+              <div class="option-buttons">
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
               </div>`);
           } else if (currentPackage === 'basico') {
-            await showBuyOptions();
+            appendMessage("bot", `
+              <div class="option-buttons">
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
+              </div>`);
           } else {
             appendMessage("bot", `
               <div class="option-buttons">
-                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">As 50 Receitas ❤️</button>
-                <button class="option-button" onclick="handleOptionClick('Pacote Completo')">Pacote Completo 🥹</button>
+                <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
               </div>`);
           }
           isWaitingResponse = false;
@@ -1453,88 +1414,54 @@ Larissa:`;
           hideTypingIndicator();
           if (purchaseIntent.package === 'completo') {
             currentPackage = 'completo';
-            if (!shownCompletoDetails) {
-              shownCompletoDetails = true;
-              await simulateTyping("Pacote Completo: 125 receitas, comunidade, contato direto e 6 bônus. R$ 19,90.");
-            } else {
-              await simulateTyping("Pacote Completo por R$ 19,90.");
-            }
-            appendMessage("bot", `
-              <div class="buy-options">
-                <button class="buy-button" onclick="handlePurchaseClick('completo')">
-                  GARANTIR O EBOOK - COMPLETO
-                </button>
-              </div>`);
+            await simulateTyping(personalizedMessages.completo[0]);
+            await simulateTyping(personalizedMessages.completo[1]);
+            await simulateTyping(personalizedMessages.completo[2]);
+            await showPaymentOptions();
           } else {
             currentPackage = 'basico';
-            if (!shownBasicoDetails) {
-              shownBasicoDetails = true;
-              await simulateTyping("Ebook Básico: 50 receitas sem glúten e sem lactose. R$ 9,90.");
-            } else {
-              await simulateTyping("Ebook Básico por R$ 9,90.");
-            }
-            await showBuyOptions();
+            await simulateTyping(personalizedMessages.basico[0]);
+            await simulateTyping(personalizedMessages.basico[1]);
+            await simulateTyping(personalizedMessages.basico[2]);
+            await showPaymentOptions();
           }
           isWaitingResponse = false;
           return;
         }
-        // Fora do fluxo: usar Gemini
+        
+        // Se não for nenhum dos casos acima, usa a Gemini para responder
         hideTypingIndicator();
-        const systemPrompt = buildSystemPrompt(text);
-        const finalPrompt = systemPrompt + "\n\nCliente: " + text + "\nLarissa:";
-        try {
-          showTypingIndicator();
-          const res = await fetch(`${GEMINI_URL}?key=${GEMINI_API_KEY}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: finalPrompt }] }]
-            })
-          });
-          const data = await res.json();
-          hideTypingIndicator();
-          let reply = "Não entendi. Pode reformular?";
-          if (!data.error && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
-            reply = data.candidates[0].content.parts[0].text.trim();
-          }
-          await simulateTyping(reply);
-          const postIntent = detectPurchaseIntent(reply);
-          if (postIntent) {
-            if (postIntent.package === 'completo') {
-              currentPackage = 'completo';
-              appendMessage("bot", `
-                <div class="buy-options">
-                  <button class="buy-button" onclick="handlePurchaseClick('completo')">
-                    GARANTIR O EBOOK - COMPLETO
-                  </button>
-                </div>`);
-            } else {
-              currentPackage = 'basico';
-              await showBuyOptions();
-            }
-          }
-        } catch (err) {
-          hideTypingIndicator();
-          appendMessage("bot", "Erro ao processar. Tente novamente.");
-          appendMessage("bot", `
-            <div class="option-buttons">
-              <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">As 50 Receitas ❤️</button>
-              <button class="option-button" onclick="handleOptionClick('Pacote Completo')">Pacote Completo 🥹</button>
-            </div>`);
-        } finally {
-          isWaitingResponse = false;
-        }
+        await handleCustomMessage(text);
+        isWaitingResponse = false;
       }
 
       function detectPurchaseIntent(message) {
         const lowerMsg = message.toLowerCase();
-        if (lowerMsg.includes('quero o pacote completo') || lowerMsg.includes('125 receitas') || lowerMsg.includes('pacote completo')) {
+        
+        // Verifica se é uma pergunta sobre o produto (não intenção de compra)
+        const isQuestion = lowerMsg.includes('?') || 
+                          lowerMsg.includes('quais') || 
+                          lowerMsg.includes('como') || 
+                          lowerMsg.includes('quando') || 
+                          lowerMsg.includes('onde') || 
+                          lowerMsg.includes('por que') || 
+                          lowerMsg.includes('porque') || 
+                          lowerMsg.includes('explica') || 
+                          lowerMsg.includes('detalhes') || 
+                          lowerMsg.includes('saber mais');
+        
+        if (isQuestion) {
+          return null; // Não é intenção de compra, é pergunta sobre o produto
+        }
+        
+        // Intenção de compra clara
+        if (lowerMsg.includes('quero o pacote completo') || lowerMsg.includes('125 receitas') || lowerMsg.includes('pacote completo') || lowerMsg.includes('vou ficar com o completo') || lowerMsg.includes('quero comprar o completo') || lowerMsg.includes('vou comprar o completo')) {
           return { package: 'completo' };
         }
-        if (lowerMsg.includes('quero as 50 receitas') || lowerMsg.includes('ebook básico') || lowerMsg.includes('50 receitas') || lowerMsg.includes('básico') || lowerMsg.includes('basico')) {
+        if (lowerMsg.includes('quero as 50 receitas') || lowerMsg.includes('ebook básico') || lowerMsg.includes('50 receitas') || lowerMsg.includes('básico') || lowerMsg.includes('basico') || lowerMsg.includes('vou ficar com as 50') || lowerMsg.includes('quero comprar as 50') || lowerMsg.includes('vou comprar as 50')) {
           return { package: 'basico' };
         }
-        if (lowerMsg.includes('quero comprar') || lowerMsg.includes('adquirir') || lowerMsg.includes('garantir')) {
+        if (lowerMsg.includes('quero comprar') || lowerMsg.includes('adquirir') || lowerMsg.includes('garantir') || lowerMsg.includes('vou comprar')) {
           return { package: currentPackage || 'basico' };
         }
         return null;
@@ -1559,14 +1486,20 @@ Larissa:`;
       async function handleTrustQuestion(message) {
         await simulateTyping("Pode ficar tranquila! Todos meus materiais são digitais e entregues automaticamente após a compra.");
         appendMessage("bot", `<img src="depoimento.webp" alt="Depoimentos" class="testimonial-image">`);
-        await simulateTyping("Aqui está a prova do carinho dos meus clientes! São receitas que realmente funcionam e fazem a diferença. Você pode pagar via PIX e enviar o comprovante aqui mesmo.");
+        await simulateTyping("Olha só o que os nossos alunos estão dizendo… Você pode confiar, esse conteúdo já transformou a rotina de muita gente.");
         if (conversationStage >= 1) {
-          await showBuyOptions();
+          appendMessage("bot", `
+            <div class="option-buttons">
+              <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+              <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+              <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
+            </div>`);
         } else {
           appendMessage("bot", `
             <div class="option-buttons">
-              <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">As 50 Receitas ❤️</button>
-              <button class="option-button" onclick="handleOptionClick('Pacote Completo')">Pacote Completo 🥹</button>
+              <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+              <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+              <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
             </div>`);
         }
       }
@@ -1581,8 +1514,9 @@ Larissa:`;
         if (conversationStage === 0) {
           appendMessage("bot", `
             <div class="option-buttons">
-              <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">As 50 Receitas ❤️</button>
-              <button class="option-button" onclick="handleOptionClick('Pacote Completo')">Pacote Completo 🥹</button>
+              <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+              <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+              <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
             </div>`);
         }
       }
@@ -1590,12 +1524,18 @@ Larissa:`;
       async function showHowToBuy() {
         await simulateTyping("<p>A compra é bem simples e segura:</p><p>1. Escolha o e-book que deseja</p><p>2. Faça o pagamento via PIX para a chave <strong>98981420070</strong> (CPF)</p><p>3. Envie o comprovante aqui no chat</p><p>4. Após confirmação, você recebe acesso imediato ao material.</p><p>5. Se não receber, verifique sua caixa de spam ou me avise.</p>");
         if (currentPackage) {
-          await showBuyOptions();
+          appendMessage("bot", `
+            <div class="option-buttons">
+              <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+              <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+              <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
+            </div>`);
         } else {
           appendMessage("bot", `
             <div class="option-buttons">
-              <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">As 50 Receitas ❤️</button>
-              <button class="option-button" onclick="handleOptionClick('Pacote Completo')">Pacote Completo 🥹</button>
+              <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+              <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+              <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
             </div>`);
         }
       }
@@ -1618,8 +1558,10 @@ Larissa:`;
       }
 
       async function simulateTyping(message, delay = 1500) {
+        // Calcular tempo de digitação baseado no tamanho da mensagem
+        const typingTime = Math.min(Math.max(message.length * 30, 1500), 5000);
         showTypingIndicator();
-        await new Promise(r => setTimeout(r, delay));
+        await new Promise(r => setTimeout(r, typingTime));
         hideTypingIndicator();
         if (message) {
           appendMessage("bot", message);
@@ -1633,6 +1575,57 @@ Larissa:`;
         msgEl.innerHTML = message;
         chatBody.appendChild(msgEl);
         chatBody.scrollTop = chatBody.scrollHeight;
+      }
+
+      async function handleCustomMessage(text) {
+        const systemPrompt = buildSystemPrompt(text);
+        const finalPrompt = systemPrompt + "\n\nCliente: " + text;
+        try {
+          showTypingIndicator();
+          const res = await fetch(`${GEMINI_URL}?key=${GEMINI_API_KEY}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: finalPrompt }] }]
+            })
+          });
+          const data = await res.json();
+          hideTypingIndicator();
+          let reply = "Não entendi. Pode reformular?";
+          if (!data.error && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
+            reply = data.candidates[0].content.parts[0].text.trim();
+            // Remover possíveis prefixos "Larissa:" ou "Cliente:" que a IA possa ter adicionado
+            reply = reply.replace(/^(Larissa:|Cliente:)\s*/i, '');
+          }
+          await simulateTyping(reply);
+          const postIntent = detectPurchaseIntent(reply);
+          if (postIntent) {
+            if (postIntent.package === 'completo') {
+              currentPackage = 'completo';
+              appendMessage("bot", `
+                <div class="option-buttons">
+                  <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                  <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                </div>`);
+            } else {
+              currentPackage = 'basico';
+              appendMessage("bot", `
+                <div class="option-buttons">
+                  <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+                  <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+                </div>`);
+            }
+          }
+        } catch (err) {
+          hideTypingIndicator();
+          appendMessage("bot", "Erro ao processar. Tente novamente.");
+          appendMessage("bot", `
+            <div class="option-buttons">
+              <button class="option-button" onclick="handleOptionClick('As 50 Receitas')">👩‍🍳 As 50 Receitas</button>
+              <button class="option-button" onclick="handleOptionClick('Me mostra o Pacote Completo')">🎀 Me mostra o Pacote Completo</button>
+              <button class="option-button" onclick="handleOptionClick('Grupo Grátis no WhatsApp')">💚 Grupo Grátis no WhatsApp</button>
+            </div>`);
+        }
       }
     </script>
   </body>
