@@ -204,14 +204,21 @@
         border: 2px solid #075E54;
       }
       .upload-label {
-        display: inline-block;
-        padding: 10px 15px;
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 12px;
         background-color: #075E54;
         color: white;
         border-radius: 20px;
         cursor: pointer;
         margin-top: 10px;
         margin-right: 10px;
+        font-size: 14px;
+        gap: 6px;
+      }
+      .upload-label img {
+        width: 16px;
+        height: 16px;
       }
       #uploadComprovanteFoto, #uploadComprovantePDF {
         display: none;
@@ -423,7 +430,7 @@
       const WHATSAPP_LARISSA = '98981507823';
       const GRUPO_WHATSAPP = 'https://chat.whatsapp.com/HgZNILSst31K2pQSXWiAAp';
       const RECEITA_GRATIS_LINK = 'https://drive.google.com/drive/folders/10dhKX4lN2eTHxDsCWycopeeLFTyYBW5M';
-      const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxRYqruUpK-bqQDyEoM0RWr0AUE4FQ2JQflb5F6cGPQXAjZldaE2Yd8z4iTxgGWdKQ/exec'; 
+      const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6L6y1ObFo79oCqECBRPskZ9AWry2Ny13zqplavWmpQdSflZzZnZjesqiarsoFj9Dj/exec'; 
       
       let isWaitingResponse = false;
       let typingEl = null;
